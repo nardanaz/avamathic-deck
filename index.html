@@ -1,0 +1,1379 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AvaMathic Programmatic</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Credenciales del servicio de Programmatic de Avalon World Agency®: tecnología, medios, audiencias curadas y formatos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Unbounded:wght@500;600;700;800&display=swap">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<style>
+/* Layout: deck de slides a pantalla completa con scroll-snap vertical; masthead fijo de marca; secciones claras (brandbook) y "night" para demos de medios. */
+:root{
+  --paper:#ffffff;
+  --mist:#f5f2ff;
+  --ink:#16121f;
+  --graphite:#3f3f3f;
+  --muted:#6b6577;
+  --violet:#7d03ff;
+  --indigo:#4b22f4;
+  --orange:#ff5a1f;
+  --green:#0bcf5a;
+  --turq:#3ad8d4;
+  --night:#0d0918;
+  --night-2:#171127;
+  --night-line:rgba(255,255,255,.12);
+  --line:rgba(22,18,31,.12);
+  --f-display:"Unbounded", "Arial Black", system-ui, sans-serif;
+  --f-body:"Poppins", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --step--1:clamp(.78rem,.74rem + .2vw,.88rem);
+  --step-0:clamp(.95rem,.9rem + .25vw,1.08rem);
+  --step-1:clamp(1.15rem,1.05rem + .5vw,1.4rem);
+  --step-2:clamp(1.5rem,1.25rem + 1.1vw,2.2rem);
+  --step-3:clamp(2rem,1.5rem + 2.4vw,3.6rem);
+  --step-4:clamp(2.6rem,1.6rem + 4.6vw,6.2rem);
+  --gutter:max(16px, env(safe-area-inset-left, 0px));
+  --radius:18px;
+  color-scheme:light;
+}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;background:var(--paper)}
+@media (max-width:820px),(max-height:560px){html{scroll-snap-type:none}}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:var(--step-0);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+*{box-sizing:border-box}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:700;line-height:1.04;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+button{font:inherit;cursor:pointer;color:inherit}
+a{color:var(--violet)}
+:focus-visible{outline:3px solid var(--violet);outline-offset:3px;border-radius:6px}
+.v{color:var(--violet)}
+.night .v{color:#b07bff}
+.eyebrow{font-family:var(--f-body);font-weight:600;font-size:var(--step--1);letter-spacing:.14em;text-transform:uppercase;color:var(--violet)}
+.night .eyebrow{color:var(--turq)}
+.lead{font-size:var(--step-1);max-width:58ch;color:var(--graphite);line-height:1.5}
+.night .lead{color:rgba(255,255,255,.78)}
+.small{font-size:var(--step--1);color:var(--muted)}
+.night .small{color:rgba(255,255,255,.55)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- masthead ---------- */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--paper)}
+.mast{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px max(20px, env(safe-area-inset-right, 0px)) 14px max(20px, env(safe-area-inset-left, 0px));pointer-events:none;transition:color .4s}
+.mast>*{pointer-events:auto}
+.mast .wm{display:block;height:30px;width:auto}
+.mast .wm.w{display:none}
+body.on-night .mast .wm.k{display:none}
+body.on-night .mast .wm.w{display:block}
+.mast-r{display:flex;align-items:center;gap:14px}
+.icons{display:flex;gap:5px;align-items:center}
+.icons img{height:16px;width:auto;display:block}
+.counter{font-weight:600;font-size:.78rem;letter-spacing:.1em;color:var(--muted);min-width:56px;text-align:right}
+body.on-night .counter{color:rgba(255,255,255,.6)}
+.menu-btn{border:1px solid var(--line);background:rgba(255,255,255,.75);backdrop-filter:blur(8px);border-radius:999px;padding:8px 14px;font-weight:600;font-size:.8rem;display:flex;gap:8px;align-items:center}
+body.on-night .menu-btn{background:rgba(23,17,39,.7);border-color:var(--night-line);color:#fff}
+.menu-btn i{display:block;width:14px;height:2px;background:currentColor;box-shadow:0 5px 0 currentColor,0 -5px 0 currentColor}
+.progress{position:fixed;left:0;top:0;height:3px;background:linear-gradient(90deg,var(--violet),var(--orange),var(--turq));z-index:70;width:0;transition:width .3s}
+.index{position:fixed;inset:0;z-index:80;background:rgba(13,9,24,.55);backdrop-filter:blur(6px);display:flex;justify-content:flex-end}
+.index-panel{background:var(--paper);width:min(420px,100%);height:100%;overflow:auto;padding:24px max(24px, env(safe-area-inset-right, 0px)) 24px 28px;display:flex;flex-direction:column;gap:6px}
+.index-panel h3{font-size:1rem;margin-bottom:10px}
+.index-panel a{display:flex;gap:14px;align-items:baseline;text-decoration:none;color:var(--ink);padding:8px 10px;border-radius:10px;font-weight:500}
+.index-panel a span{font-size:.75rem;color:var(--muted);width:24px;font-variant-numeric:tabular-nums}
+.index-panel a:hover,.index-panel a.cur{background:var(--mist);color:var(--violet)}
+.index-close{align-self:flex-end;border:0;background:var(--mist);border-radius:999px;padding:6px 12px;font-weight:600}
+
+/* ---------- slides ---------- */
+.slide{position:relative;min-height:100svh;scroll-snap-align:start;display:flex;align-items:center;padding-block:96px 64px;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px));overflow:hidden;overflow:clip;isolation:isolate}
+.wrap{width:100%;max-width:1240px;margin:0 auto;position:relative;z-index:2}
+.night{background:var(--night);color:#fff}
+.mesh::before{content:"";position:absolute;inset:-10%;z-index:-1;background:
+  radial-gradient(42% 50% at 100% 100%, rgba(125,3,255,.55), transparent 70%),
+  radial-gradient(35% 40% at 88% 18%, rgba(58,216,212,.30), transparent 70%),
+  radial-gradient(40% 40% at 75% 95%, rgba(255,90,31,.30), transparent 70%),
+  radial-gradient(30% 30% at 0% 0%, rgba(11,207,90,.12), transparent 70%);
+  filter:blur(10px)}
+.mesh.alt::before{background:
+  radial-gradient(40% 45% at 0% 100%, rgba(125,3,255,.45), transparent 70%),
+  radial-gradient(30% 35% at 15% 85%, rgba(255,90,31,.28), transparent 70%),
+  radial-gradient(35% 40% at 100% 0%, rgba(58,216,212,.25), transparent 70%)}
+.night.mesh::before{background:
+  radial-gradient(45% 55% at 100% 100%, rgba(125,3,255,.55), transparent 70%),
+  radial-gradient(30% 40% at 0% 0%, rgba(75,34,244,.35), transparent 70%),
+  radial-gradient(28% 30% at 85% 10%, rgba(58,216,212,.18), transparent 70%)}
+.slide-tag{position:absolute;left:max(20px, env(safe-area-inset-left, 0px));bottom:22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;z-index:3}
+.night .slide-tag{color:rgba(255,255,255,.45)}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,72px);align-items:center}
+.grid2.even{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.stack{display:flex;flex-direction:column;gap:18px;min-width:0}
+.h-xl{font-size:var(--step-4);font-weight:800}
+.h-l{font-size:var(--step-3)}
+.h-m{font-size:var(--step-2)}
+@media (max-width:900px){.grid2,.grid2.even{grid-template-columns:minmax(0,1fr)}}
+
+/* reveal (visible at rest; animates only when JS marks it) */
+.js .rv{transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1)}
+.js .slide:not(.seen) .rv{opacity:.001;transform:translateY(22px)}
+.js .slide.seen .rv:nth-child(2){transition-delay:.08s}
+.js .slide.seen .rv:nth-child(3){transition-delay:.16s}
+.js .slide.seen .rv:nth-child(4){transition-delay:.24s}
+
+/* chips, stats, cards */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.82rem;font-weight:500;background:rgba(255,255,255,.7)}
+.night .chip{border-color:var(--night-line);background:rgba(255,255,255,.05);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
+.stat{padding:16px 0 0;border-top:2px solid var(--violet)}
+.night .stat{border-top-color:var(--turq)}
+.stat b{display:block;font-family:var(--f-display);font-size:var(--step-2);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:.82rem;color:var(--muted);margin-top:6px;line-height:1.35}
+.night .stat span{color:rgba(255,255,255,.6)}
+.src{font-size:.7rem;color:var(--muted);letter-spacing:.02em}
+.night .src{color:rgba(255,255,255,.4)}
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:13px 22px;font-weight:600;background:var(--violet);color:#fff;font-size:.95rem;transition:transform .2s, box-shadow .2s;text-decoration:none}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px -10px rgba(125,3,255,.7)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.night .btn.ghost{color:#fff;border-color:rgba(255,255,255,.6)}
+.btn .tri{width:0;height:0;border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;padding:5px;border-radius:999px;background:var(--mist);width:max-content;max-width:100%}
+.night .tabs{background:rgba(255,255,255,.07)}
+.tabs button{border:0;background:transparent;border-radius:999px;padding:8px 14px;font-weight:600;font-size:.82rem;color:var(--muted)}
+.night .tabs button{color:rgba(255,255,255,.65)}
+.tabs button[aria-selected="true"]{background:var(--violet);color:#fff}
+.bench{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.8rem;color:var(--muted)}
+.bench b{color:var(--ink);font-variant-numeric:tabular-nums}
+.night .bench{color:rgba(255,255,255,.6)}.night .bench b{color:#fff}
+.buy{display:flex;flex-wrap:wrap;gap:6px}
+.buy span{font-size:.7rem;font-weight:700;letter-spacing:.08em;padding:4px 9px;border-radius:6px;background:var(--mist);color:var(--violet)}
+.night .buy span{background:rgba(176,123,255,.14);color:#cfb2ff}
+
+/* ---------- device frames ---------- */
+.phone{position:relative;width:min(300px,74vw);aspect-ratio:9/19;border-radius:38px;background:#0b0811;padding:10px;box-shadow:0 30px 70px -30px rgba(40,10,90,.55),inset 0 0 0 2px #2b2340;max-width:100%}
+.phone .scr{position:relative;width:100%;height:100%;border-radius:29px;overflow:hidden;background:#fff}
+.phone::after{content:"";position:absolute;top:18px;left:50%;transform:translateX(-50%);width:76px;height:20px;border-radius:12px;background:#0b0811;z-index:5}
+.phone.sm{width:min(220px,62vw);border-radius:32px;padding:8px}
+.phone.sm .scr{border-radius:25px}
+.phone.sm::after{top:14px;width:60px;height:16px}
+.tv{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:14px;box-shadow:0 0 0 10px #15111f,0 0 0 11px #2d2640,0 40px 80px -30px rgba(0,0,0,.8);overflow:hidden;max-width:100%}
+.tv-stand{width:30%;height:14px;margin:18px auto 0;background:linear-gradient(#2d2640,#15111f);border-radius:0 0 12px 12px}
+
+/* ---------- HERO ---------- */
+#hero{background:var(--paper)}
+#hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+#hero .h-xl{font-size:clamp(3rem,1.4rem + 8vw,9.2rem);line-height:.92;letter-spacing:-.03em}
+#hero .tag{font-size:var(--step-1);color:var(--graphite)}
+#hero .tag b{color:var(--ink)}
+.dot{display:inline-block;width:.32em;height:.32em;border-radius:50%;background:var(--violet);margin-left:.08em;vertical-align:.05em}
+.ticker{display:flex;gap:28px;flex-wrap:wrap;margin-top:8px}
+.ticker div{min-width:0}
+.ticker b{font-family:var(--f-display);font-size:var(--step-2);display:block;font-variant-numeric:tabular-nums}
+.ticker span{font-size:.8rem;color:var(--muted)}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.brandline{display:flex;align-items:center;gap:12px;font-weight:600;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.brandline img{height:22px}
+
+/* ---------- Teaser overlay ---------- */
+.teaser{position:fixed;inset:0;z-index:100;background:var(--night);color:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.teaser canvas{position:absolute;inset:0;width:100%;height:100%}
+.teaser .stage{position:relative;z-index:2;width:min(1100px,92vw);text-align:left}
+.teaser .line{font-family:var(--f-display);font-weight:700;font-size:clamp(1.8rem,1rem + 4vw,4.6rem);line-height:1.02;letter-spacing:-.02em}
+.teaser .line .w{display:inline-block;opacity:0;transform:translateY(40%) rotate(2deg);filter:blur(6px);transition:opacity .45s, transform .55s cubic-bezier(.2,.9,.2,1), filter .45s}
+.teaser .line .w.in{opacity:1;transform:none;filter:none}
+.teaser .line .w.k{color:#b07bff}
+.teaser .sub{margin-top:18px;font-size:var(--step-1);color:rgba(255,255,255,.7);min-height:1.6em}
+.teaser .fmts{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.teaser .fmts span{border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 16px;font-weight:600;opacity:0;transform:scale(.8);transition:all .4s}
+.teaser .fmts span.in{opacity:1;transform:none;background:rgba(125,3,255,.35);border-color:#b07bff}
+.teaser .bar{position:absolute;left:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--violet),var(--orange));z-index:3}
+.teaser .ctl{position:absolute;top:max(18px, env(safe-area-inset-top, 0px));right:max(18px, env(safe-area-inset-right, 0px));z-index:4;display:flex;gap:8px}
+.teaser .ctl button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);border-radius:999px;padding:8px 16px;font-weight:600;font-size:.85rem;color:#fff}
+.teaser .logo-end{display:none;align-items:center;gap:22px;margin-top:28px}
+.teaser .logo-end img{height:clamp(40px,6vw,84px)}
+.teaser .cc{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:3;font-size:.9rem;color:rgba(255,255,255,.75);background:rgba(0,0,0,.35);padding:6px 14px;border-radius:8px;max-width:90vw;text-align:center}
+
+/* ---------- Manifesto ---------- */
+.manifest .h-l{max-width:16ch}
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:10px}
+.pillar{padding:22px;border-radius:var(--radius);background:rgba(255,255,255,.75);backdrop-filter:blur(8px);border:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.pillar img{height:30px;width:auto;align-self:flex-start}
+.pillar h3{font-size:1.15rem}
+.pillar p{font-size:.92rem;color:var(--graphite)}
+@media (max-width:820px){.pillars{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- RTB ---------- */
+.rtb{background:var(--night-2);border:1px solid var(--night-line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.rtb-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ms{font-family:var(--f-display);font-size:2.2rem;font-variant-numeric:tabular-nums;color:var(--turq)}
+.ms small{font-size:.9rem;color:rgba(255,255,255,.55);margin-left:4px}
+.user-card{display:flex;gap:14px;align-items:center;background:rgba(255,255,255,.05);border-radius:14px;padding:12px 14px}
+.avatar{width:46px;height:46px;border-radius:50%;flex:none;background:conic-gradient(var(--violet),var(--turq),var(--orange),var(--violet))}
+.user-card .sig{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.user-card .sig span{font-size:.72rem;padding:3px 8px;border-radius:6px;background:rgba(58,216,212,.14);color:#9ff2ef}
+.bids{display:flex;flex-direction:column;gap:9px}
+.bid{display:grid;grid-template-columns:120px minmax(0,1fr) 64px;gap:10px;align-items:center;font-size:.82rem}
+.bid .track{height:10px;background:rgba(255,255,255,.07);border-radius:6px;overflow:hidden}
+.bid .fill{height:100%;width:0;border-radius:6px;background:rgba(255,255,255,.35);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.bid.win .fill{background:linear-gradient(90deg,var(--violet),#b07bff)}
+.bid.win{color:#fff;font-weight:600}
+.bid .p{text-align:right;font-variant-numeric:tabular-nums;color:rgba(255,255,255,.7)}
+.steps-rtb{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.steps-rtb div{font-size:.7rem;padding:8px;border-radius:8px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);transition:all .3s;line-height:1.3}
+.steps-rtb div.on{background:rgba(125,3,255,.35);color:#fff}
+.won-ad{border-radius:12px;padding:14px;background:linear-gradient(120deg,#7d03ff,#ff5a1f);font-weight:600;display:flex;justify-content:space-between;gap:10px;align-items:center;opacity:.25;transition:opacity .4s}
+.won-ad.on{opacity:1}
+@media (max-width:560px){.steps-rtb{grid-template-columns:repeat(2,minmax(0,1fr))}.bid{grid-template-columns:90px minmax(0,1fr) 54px}}
+
+/* ---------- Diferencial ---------- */
+.diff{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+.diff>div{padding:22px 22px 22px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.diff>div:not(:nth-child(3n+1)){padding-left:22px;border-left:1px solid var(--line)}
+.diff h3{font-size:1.05rem}
+.diff p{font-size:.9rem;color:var(--graphite)}
+.diff .k{font-size:.72rem;font-weight:700;color:var(--violet);letter-spacing:.12em}
+@media (max-width:820px){.diff{grid-template-columns:minmax(0,1fr)}.diff>div:not(:nth-child(3n+1)){padding-left:0;border-left:0}}
+
+/* ---------- Stack / ecosystem ---------- */
+.eco{position:relative;width:100%;aspect-ratio:1.25;max-width:640px;margin:0 auto}
+.eco svg{width:100%;height:100%;display:block}
+.eco .node{cursor:pointer}
+.eco-info{min-height:120px;padding:18px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid var(--night-line)}
+.eco-info h4{font-size:1rem;margin-bottom:6px;color:#fff}
+.eco-info p{font-size:.88rem;color:rgba(255,255,255,.72)}
+
+/* ---------- Inventory ---------- */
+.map{position:relative;width:100%;aspect-ratio:2/1;border-radius:20px;overflow:hidden}
+.map canvas{width:100%;height:100%;display:block}
+.pubs{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline}
+.pubs span{font-weight:600;color:var(--graphite);font-size:1rem;white-space:nowrap}
+.pubs span:nth-child(3n){font-family:Georgia,"Times New Roman",serif;font-weight:700}
+.pubs span:nth-child(4n){font-family:var(--f-display);font-size:.9rem}
+.big-n{display:flex;gap:28px;flex-wrap:wrap}
+.big-n b{font-family:var(--f-display);font-size:var(--step-3);color:var(--violet);line-height:1;display:block}
+.big-n span{font-size:.85rem;color:var(--muted)}
+
+/* ---------- Audience builder ---------- */
+.aud{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:22px}
+@media (max-width:900px){.aud{grid-template-columns:minmax(0,1fr)}}
+.aud-groups{display:flex;flex-direction:column;gap:14px}
+.aud-groups h4{font-family:var(--f-body);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600}
+.sig-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font-size:.82rem;font-weight:500;transition:all .2s}
+.sig-btn[aria-pressed="true"]{background:var(--violet);color:#fff;border-color:var(--violet)}
+.aud-out{border-radius:22px;padding:22px;background:var(--night);color:#fff;display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden}
+.aud-out canvas{width:100%;height:170px;display:block;border-radius:12px;background:rgba(255,255,255,.04)}
+.meter{display:flex;flex-direction:column;gap:6px}
+.meter .row{display:flex;justify-content:space-between;font-size:.82rem;color:rgba(255,255,255,.7)}
+.meter .row b{color:#fff;font-variant-numeric:tabular-nums}
+.meter .t{height:8px;background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden}
+.meter .t i{display:block;height:100%;border-radius:6px;transition:width .5s}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.presets button{border:1px dashed var(--violet);background:transparent;color:var(--violet);border-radius:999px;padding:6px 12px;font-size:.78rem;font-weight:600}
+
+/* geo */
+.geo{position:relative;border-radius:22px;overflow:hidden;background:#120d22;aspect-ratio:4/3;max-width:100%}
+.geo canvas{width:100%;height:100%;display:block}
+.geo-legend{position:absolute;left:14px;bottom:12px;display:flex;gap:14px;font-size:.72rem;color:rgba(255,255,255,.75);flex-wrap:wrap;right:14px}
+.geo-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.geo-count{position:absolute;right:14px;top:12px;font-size:.78rem;color:#fff;background:rgba(125,3,255,.5);padding:6px 10px;border-radius:999px;font-variant-numeric:tabular-nums}
+
+/* ---------- formats index ---------- */
+.fx{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.fx a{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:30px;min-height:170px;padding:20px;border-radius:var(--radius);text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);overflow:hidden;transition:transform .25s, box-shadow .25s}
+.fx a:hover{transform:translateY(-4px);box-shadow:0 20px 40px -24px rgba(75,34,244,.6)}
+.fx a .n{font-size:.75rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.fx a h3{font-size:1.15rem}
+.fx a p{font-size:.8rem;color:var(--muted);margin-top:6px}
+.fx a .glyph{position:absolute;right:-20px;top:-20px;width:110px;height:110px;border-radius:50%;opacity:.16;transition:transform .5s}
+.fx a:hover .glyph{transform:scale(1.25)}
+@media (max-width:960px){.fx{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.fx a{min-height:120px;gap:14px;padding:16px}.fx a h3{font-size:1rem}}
+
+/* ---------- Native ---------- */
+.pub-page{background:#fff;border-radius:16px;box-shadow:0 30px 70px -40px rgba(40,10,90,.6);border:1px solid var(--line);overflow:hidden;font-family:Georgia,"Times New Roman",serif;color:#222;max-width:100%}
+.pub-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:3px solid #222;font-family:var(--f-body)}
+.pub-bar b{font-family:Georgia,serif;font-size:1.25rem;letter-spacing:-.02em}
+.pub-bar span{font-size:.7rem;color:#777}
+.pub-body{padding:16px;display:flex;flex-direction:column;gap:12px;max-height:420px;overflow:auto}
+.pub-body h4{font-family:Georgia,serif;font-size:1.25rem;line-height:1.2}
+.pub-body .lines i{display:block;height:8px;background:#ececec;border-radius:4px;margin:7px 0}
+.feed-h{font-family:var(--f-body);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#555;display:flex;justify-content:space-between;border-top:1px solid #ddd;padding-top:10px}
+.feed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.card-n{display:flex;flex-direction:column;gap:6px;font-family:var(--f-body)}
+.card-n .img{aspect-ratio:16/10;border-radius:6px;position:relative;overflow:hidden}
+.card-n p{font-size:.78rem;font-weight:600;line-height:1.3;color:#222}
+.card-n small{font-size:.66rem;color:#888}
+.card-n.sp small{color:var(--violet);font-weight:600}
+.native-motion .img::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-100%);animation:sheen 2.6s infinite}
+@keyframes sheen{to{transform:translateX(100%)}}
+.carousel{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
+.carousel .card-n{flex:0 0 46%;scroll-snap-align:start}
+.vert-wrap{display:flex;gap:14px;align-items:flex-start;font-family:var(--f-body)}
+.vert-ad{flex:0 0 150px;aspect-ratio:9/16;border-radius:12px;position:relative;overflow:hidden;color:#fff;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+.vert-ad b{font-size:.95rem;line-height:1.15}
+.vert-ad .bar2{position:absolute;top:8px;left:8px;right:8px;height:3px;background:rgba(255,255,255,.3);border-radius:2px;overflow:hidden}
+.vert-ad .bar2 i{display:block;height:100%;background:#fff;animation:prog 6s linear infinite}
+@keyframes prog{from{width:0}to{width:100%}}
+.ad-cta{align-self:flex-start;background:#fff;color:#111;font-weight:700;font-size:.72rem;padding:6px 10px;border-radius:999px}
+@media (max-width:560px){.feed{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.feed .card-n:nth-child(3){display:none}}
+
+/* creative art blocks (generic fictional brands) */
+.art-a{background:radial-gradient(circle at 30% 30%,#ffb38a,#ff5a1f 45%,#7d03ff)}
+.art-b{background:radial-gradient(circle at 70% 30%,#9ff2ef,#3ad8d4 40%,#4b22f4)}
+.art-c{background:linear-gradient(135deg,#0bcf5a,#3ad8d4)}
+.art-d{background:linear-gradient(160deg,#16121f,#4b22f4)}
+.art-e{background:radial-gradient(circle at 50% 120%,#ff5a1f,#7d03ff 60%,#16121f)}
+.art-f{background:linear-gradient(135deg,#f5f2ff,#b07bff)}
+
+/* ---------- Rich media gallery ---------- */
+.rm{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:36px;align-items:center}
+@media (max-width:900px){.rm{grid-template-columns:minmax(0,1fr)}}
+.rm-stage{display:flex;justify-content:center;align-items:center;min-height:540px}
+.rm-list{display:flex;flex-direction:column;gap:6px}
+.rm-list button{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;border:1px solid transparent;background:transparent;border-radius:14px;padding:12px 14px;transition:all .2s}
+.rm-list button b{font-family:var(--f-display);font-size:1rem;font-weight:600}
+.rm-list button span{font-size:.78rem;color:var(--muted)}
+.rm-list button[aria-selected="true"]{background:#fff;border-color:var(--line);box-shadow:0 14px 30px -20px rgba(75,34,244,.6)}
+.rm-list button[aria-selected="true"] b{color:var(--violet)}
+.ad-host{position:absolute;inset:0;display:flex;flex-direction:column;background:#f3f1f7;font-family:var(--f-body)}
+.ad-host .site{padding:44px 12px 10px;display:flex;flex-direction:column;gap:8px;flex:1;overflow:hidden}
+.ad-host .site i{display:block;height:8px;background:#e3dfeb;border-radius:4px}
+.ad-host .site .hd{height:14px;width:60%;background:#cfc8dc}
+.ad-slot{position:relative;border-radius:10px;overflow:hidden;color:#fff;flex:none}
+.adlabel{position:absolute;top:6px;right:8px;font-size:.55rem;letter-spacing:.1em;background:rgba(0,0,0,.35);padding:2px 6px;border-radius:4px;z-index:4}
+/* cube */
+.cube-scene{width:150px;height:150px;perspective:700px;margin:auto;touch-action:none;cursor:grab}
+.cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;transform:rotateX(-14deg) rotateY(0deg)}
+.cube .f{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;font-weight:700;gap:4px;backface-visibility:hidden;border-radius:4px}
+.cube .f b{font-family:var(--f-display);font-size:1.05rem;line-height:1.1}
+.cube .f small{font-weight:500;font-size:.72rem;opacity:.85}
+/* countdown */
+.cd{display:flex;gap:6px;justify-content:center}
+.cd div{background:#fff;color:#16121f;border-radius:8px;padding:6px 4px;width:48px;text-align:center}
+.cd b{font-family:var(--f-display);font-size:1.2rem;display:block;font-variant-numeric:tabular-nums}
+.cd small{font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#6b6577}
+/* trivia */
+.trivia button{display:block;width:100%;margin-top:7px;border:0;border-radius:999px;padding:9px;font-weight:700;font-size:.8rem;background:#fff;color:#16121f;transition:all .2s}
+.trivia button.ok{background:var(--green);color:#fff}
+.trivia button.no{background:#ff4d4d;color:#fff}
+/* gift */
+.gift{width:120px;height:120px;margin:10px auto;position:relative;cursor:pointer}
+.gift .box{position:absolute;bottom:0;left:10px;right:10px;height:70px;background:var(--orange);border-radius:6px}
+.gift .lid{position:absolute;bottom:66px;left:2px;right:2px;height:24px;background:#ff7a47;border-radius:6px;transition:transform .6s cubic-bezier(.3,1.6,.5,1);transform-origin:left bottom}
+.gift .rib{position:absolute;left:50%;transform:translateX(-50%);width:16px;bottom:0;height:90px;background:#fff6}
+.gift.open .lid{transform:translate(-10px,-40px) rotate(-35deg)}
+.gift .coupon{position:absolute;left:50%;bottom:40px;transform:translate(-50%,0) scale(.3);opacity:0;background:#fff;color:var(--violet);font-family:var(--f-display);font-weight:800;padding:8px 12px;border-radius:8px;white-space:nowrap;transition:all .6s .2s}
+.gift.open .coupon{opacity:1;transform:translate(-50%,-48px) scale(1)}
+/* scroll reveal */
+.scroller{position:absolute;inset:0;overflow-y:auto;background:#f3f1f7}
+.scroller .site{padding:44px 12px 10px;display:flex;flex-direction:column;gap:8px}
+.scroller .site i{display:block;height:8px;background:#e3dfeb;border-radius:4px}
+.window{position:relative;height:200px;border-radius:10px;overflow:hidden;clip-path:inset(0 round 10px)}
+.window .bgfix{position:fixed;inset:0;pointer-events:none}
+.window-in{position:absolute;inset:0;display:flex;align-items:flex-end;padding:14px;color:#fff;font-family:var(--f-display);font-weight:700;line-height:1.1}
+/* hotspots */
+.hs-stage{position:relative;height:230px}
+.hs-dot{position:absolute;width:26px;height:26px;border-radius:50%;background:#fff;border:0;color:var(--violet);font-weight:800;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 12px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+.hs-tip{position:absolute;left:10px;right:10px;bottom:10px;background:#fff;color:#16121f;border-radius:10px;padding:10px;font-size:.78rem;min-height:56px}
+/* expandable */
+.expand{transition:height .5s cubic-bezier(.2,.8,.2,1);height:90px;cursor:pointer}
+.expand.open{height:330px}
+
+/* ---------- Gaming ---------- */
+.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:52px 12px 12px}
+.mem{aspect-ratio:3/4;border-radius:8px;perspective:400px;border:0;padding:0;background:transparent}
+.mem .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.mem.flip .in{transform:rotateY(180deg)}
+.mem .fa,.mem .fb{position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center}
+.mem .fa{background:linear-gradient(135deg,#4b22f4,#7d03ff)}
+.mem .fa::after{content:"";width:40%;height:40%;border:2px solid rgba(255,255,255,.4);border-radius:50%}
+.mem .fb{transform:rotateY(180deg);background:#fff}
+.mem .fb img{width:55%;height:auto}
+.game-hud{position:absolute;top:40px;left:12px;right:12px;display:flex;justify-content:space-between;font-size:.72rem;font-weight:700;color:#fff;z-index:3}
+.game-scr{background:linear-gradient(180deg,#1b1238,#3b1a7a)}
+.reward{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center;color:#fff;background:rgba(13,9,24,.92);z-index:6}
+.reward .vid{width:100%;aspect-ratio:16/9;border-radius:10px;position:relative;overflow:hidden}
+.reward .vid .pb{position:absolute;left:0;bottom:0;height:4px;background:#fff;width:0}
+.coins{font-family:var(--f-display);font-size:1.4rem;color:#ffd84d}
+.cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cats span{font-size:.8rem;font-weight:600;padding:10px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--night-line);text-align:center}
+
+/* ---------- Audio / Spotify ---------- */
+.player{background:#121212;border-radius:22px;padding:18px;color:#fff;display:flex;flex-direction:column;gap:14px;box-shadow:0 40px 80px -40px rgba(0,0,0,.9);min-width:0}
+.moods{display:flex;flex-wrap:wrap;gap:6px}
+.moods button{border:0;border-radius:999px;padding:7px 13px;background:#2a2a2a;color:#fff;font-size:.78rem;font-weight:600}
+.moods button[aria-pressed="true"]{background:#1ed760;color:#000}
+.np{display:flex;gap:14px;align-items:center}
+.np .cover{width:86px;height:86px;border-radius:8px;flex:none;position:relative;overflow:hidden}
+.np .meta{min-width:0}
+.np .meta b{display:block;font-size:1.05rem}
+.np .meta span{font-size:.8rem;color:#b3b3b3}
+.pbar{height:4px;border-radius:2px;background:#4d4d4d;overflow:hidden}
+.pbar i{display:block;height:100%;background:#fff;width:0}
+.pl-ctl{display:flex;align-items:center;justify-content:center;gap:22px}
+.pl-ctl button{border:0;background:#fff;color:#000;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.wave{width:100%;height:56px;display:block}
+.companion{border-radius:12px;padding:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;opacity:.25;filter:grayscale(1);transition:all .5s;background:linear-gradient(110deg,#ff5a1f,#7d03ff)}
+.companion.on{opacity:1;filter:none}
+.companion b{font-family:var(--f-display);font-size:.95rem;line-height:1.15}
+.ad-state{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1ed760}
+.seg-list{columns:3;column-gap:16px;font-size:.84rem;color:rgba(255,255,255,.75)}
+.seg-list span{display:block;padding:2px 0;break-inside:avoid}
+@media (max-width:560px){.seg-list{columns:2}}
+
+/* ---------- Video ---------- */
+.vplayer{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;max-width:100%}
+.vplayer .content{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-weight:600;background:linear-gradient(135deg,#222,#111)}
+.vplayer .adlayer{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;color:#fff;overflow:hidden}
+.vplayer .adlayer .kb{position:absolute;inset:-10%;animation:kb 8s ease-in-out infinite alternate}
+@keyframes kb{to{transform:scale(1.12) translate(3%,-2%)}}
+.vplayer .adlayer h4{position:relative;font-size:clamp(1.2rem,.8rem + 2vw,2.3rem);max-width:14ch}
+.vplayer .skip{position:absolute;right:0;bottom:44px;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.3);border-right:0;padding:10px 16px;font-size:.85rem;font-weight:600;color:#fff;z-index:3}
+.vplayer .adtag{position:absolute;left:14px;bottom:14px;font-size:.75rem;background:#ffd84d;color:#000;font-weight:700;padding:3px 8px;border-radius:4px;z-index:3}
+.vplayer .tl{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.2);z-index:3}
+.vplayer .tl i{display:block;height:100%;background:#ffd84d;width:0}
+.vplayer .cta2{position:relative;align-self:flex-start;margin-top:10px;background:#fff;color:#000;font-weight:700;font-size:.8rem;padding:8px 14px;border-radius:999px}
+.yt-formats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.yt-formats div{padding:14px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.yt-formats b{display:block;font-family:var(--f-display);font-size:.92rem;margin-bottom:4px}
+.yt-formats span{font-size:.78rem;color:var(--muted);line-height:1.35;display:block}
+@media (max-width:620px){.yt-formats{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+
+/* ---------- CTV ---------- */
+.tv video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:all .6s cubic-bezier(.2,.8,.2,1)}
+.tv.lshape video{left:0;top:0;width:76%;height:78%}
+.tv .lframe{position:absolute;inset:0;background:linear-gradient(120deg,#7d03ff,#4b22f4 60%,#16121f);opacity:0;transition:opacity .5s;display:flex;justify-content:flex-end;align-items:flex-end;padding:3%;z-index:0}
+.tv.lshape .lframe{opacity:1}
+.tv .lframe .lr{position:absolute;right:2.5%;top:6%;width:20%;color:#fff;display:flex;flex-direction:column;gap:6px}
+.tv .lframe .lr b{font-family:var(--f-display);font-size:clamp(.6rem,.3rem + .9vw,1.1rem);line-height:1.1}
+.tv .lframe .lb{position:absolute;left:3%;bottom:5%;width:70%;color:#fff;font-weight:600;font-size:clamp(.55rem,.3rem + .7vw,.95rem);display:flex;gap:12px;align-items:center}
+.tv .lframe .lb span{background:#fff;color:#16121f;border-radius:999px;padding:3px 10px;font-weight:700}
+.tv video{z-index:1}
+.tv .qr{position:absolute;right:3%;bottom:6%;z-index:3;background:#fff;border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:4px;align-items:center;opacity:0;transform:scale(.8);transition:all .4s;width:clamp(70px,14%,130px)}
+.tv .qr canvas,.tv .qr img{width:100%;height:auto;display:block}
+.tv .qr small{font-size:clamp(.45rem,.2rem + .6vw,.7rem);font-weight:700;color:#16121f;text-align:center;line-height:1.1}
+.tv.mqr .qr{opacity:1;transform:none}
+.tv .pause{position:absolute;inset:0;z-index:4;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s}
+.tv .pause .pcard{background:linear-gradient(120deg,#7d03ff,#ff5a1f);color:#fff;border-radius:12px;padding:4% 5%;width:46%;display:flex;flex-direction:column;gap:6px}
+.tv .pause .pcard b{font-family:var(--f-display);font-size:clamp(.8rem,.4rem + 1.4vw,1.6rem);line-height:1.1}
+.tv .pause .pcard small{font-size:clamp(.5rem,.3rem + .6vw,.8rem)}
+.tv.mpause .pause{opacity:1}
+.tv .react{position:absolute;left:3%;bottom:6%;z-index:3;display:flex;gap:6px;opacity:0;transition:opacity .4s;background:rgba(0,0,0,.45);padding:6px 10px;border-radius:999px}
+.tv .react button{border:0;background:rgba(255,255,255,.15);color:#fff;border-radius:999px;padding:4px 10px;font-size:clamp(.5rem,.3rem + .6vw,.8rem);font-weight:700}
+.tv.mint .react{opacity:1}
+.tv .floaty{position:absolute;z-index:5;font-weight:800;color:#fff;pointer-events:none;animation:floaty 1.4s ease-out forwards}
+@keyframes floaty{to{transform:translateY(-120px);opacity:0}}
+.tv .badge{position:absolute;left:3%;top:5%;z-index:3;font-size:clamp(.5rem,.3rem + .6vw,.75rem);font-weight:700;background:rgba(0,0,0,.5);color:#fff;padding:4px 10px;border-radius:6px;letter-spacing:.08em}
+.tv .play-big{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);border:0}
+.tv .play-big span{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center}
+.tv .play-big span::after{content:"";border-left:20px solid #16121f;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:5px}
+.platforms{display:flex;flex-wrap:wrap;gap:6px}
+.platforms span{font-size:.78rem;font-weight:600;padding:6px 11px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid var(--night-line)}
+
+/* ---------- DOOH ---------- */
+.city{position:relative;width:100%;aspect-ratio:16/10;border-radius:22px;overflow:hidden;transition:background 1s;max-width:100%}
+.city canvas{position:absolute;inset:0;width:100%;height:100%}
+.billboard{position:absolute;left:30%;top:14%;width:44%;aspect-ratio:16/9;border-radius:6px;overflow:hidden;box-shadow:0 0 0 6px #1d1a26,0 0 60px rgba(125,3,255,.45);background:#000;z-index:2}
+.billboard .bc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:6%;color:#fff;gap:4px;transition:opacity .6s}
+.billboard .bc b{font-family:var(--f-display);font-size:clamp(.8rem,.3rem + 1.8vw,1.9rem);line-height:1.05}
+.billboard .bc small{font-size:clamp(.5rem,.3rem + .7vw,.9rem);font-weight:600;opacity:.9}
+.bb-pole{position:absolute;left:51%;top:calc(14% + 44%*9/16*1.6);width:2%;bottom:20%;background:#1d1a26;z-index:1}
+.dooh-ctl{display:flex;flex-direction:column;gap:10px}
+.dooh-ctl .tabs{width:100%}
+.trigger-log{font-size:.78rem;color:var(--muted);min-height:1.4em}
+
+/* ---------- Innovation ---------- */
+.inno{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.inno button{position:relative;text-align:left;border:1px solid var(--night-line);background:rgba(255,255,255,.04);border-radius:16px;padding:18px;color:#fff;display:flex;flex-direction:column;gap:10px;min-height:150px;transition:all .25s;overflow:hidden}
+.inno button:hover,.inno button[aria-expanded="true"]{background:rgba(125,3,255,.22);border-color:#b07bff}
+.inno b{font-family:var(--f-display);font-size:1rem;font-weight:600}
+.inno span{font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.4}
+.inno .ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.inno .ic img{height:20px;width:auto}
+@media (max-width:960px){.inno{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.inno-detail{margin-top:16px;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid var(--night-line);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;min-height:96px}
+.inno-detail p{color:rgba(255,255,255,.8);font-size:.92rem}
+@media (max-width:620px){.inno-detail{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- Safety ---------- */
+.dash{border-radius:22px;background:#fff;border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:16px;box-shadow:0 30px 60px -40px rgba(40,10,90,.5);min-width:0}
+.dash-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;color:var(--green);letter-spacing:.1em}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.kpis div{padding:12px;border-radius:12px;background:var(--mist)}
+.kpis b{display:block;font-family:var(--f-display);font-size:1.3rem;font-variant-numeric:tabular-nums}
+.kpis span{font-size:.72rem;color:var(--muted)}
+@media (max-width:560px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dash canvas{width:100%;height:150px;display:block}
+.vendors{display:flex;flex-wrap:wrap;gap:8px}
+.vendors span{font-weight:700;font-size:.85rem;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:#fff}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;font-size:.88rem}
+.checks div{display:flex;gap:8px;align-items:flex-start}
+.checks div::before{content:"";flex:none;width:16px;height:16px;margin-top:3px;border-radius:50%;background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' stroke='white' stroke-width='2' fill='none'/%3E%3C/svg%3E")}
+@media (max-width:560px){.checks{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- buying models ---------- */
+.models{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.models div{padding:18px;border-radius:16px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.models b{font-family:var(--f-display);font-size:1rem}
+.models span{font-size:.82rem;color:var(--graphite)}
+.models .lvl{display:flex;gap:3px;margin-top:auto}
+.models .lvl i{flex:1;height:5px;border-radius:3px;background:var(--mist)}
+.models .lvl i.on{background:var(--violet)}
+@media (max-width:900px){.models{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.models{grid-template-columns:minmax(0,1fr)}}
+.credit{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;padding:22px;border-radius:20px;background:var(--night);color:#fff}
+.credit h3{font-size:1.3rem}
+.credit p{color:rgba(255,255,255,.75);font-size:.92rem;margin-top:6px}
+@media (max-width:620px){.credit{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- process ---------- */
+.proc{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;position:relative}
+.proc>div{padding:0 18px 0 0;display:flex;flex-direction:column;gap:10px;position:relative}
+.proc .n{width:44px;height:44px;border-radius:50%;background:var(--violet);color:#fff;font-family:var(--f-display);font-weight:700;display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
+.proc>div:nth-child(4) .n{background:var(--green)}
+.proc>div:nth-child(5) .n{background:var(--green)}
+.proc>div::after{content:"";position:absolute;top:22px;left:44px;right:0;height:2px;background:var(--line);z-index:1}
+.proc>div:last-child::after{display:none}
+.proc h3{font-size:1rem}
+.proc p{font-size:.85rem;color:var(--graphite)}
+@media (max-width:900px){.proc{grid-template-columns:minmax(0,1fr);gap:20px}.proc>div::after{display:none}}
+
+/* ---------- brands ---------- */
+.brands{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.brands span{display:flex;align-items:center;justify-content:center;text-align:center;height:84px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:600;font-size:.95rem;color:var(--graphite);padding:8px;transition:all .25s}
+.brands span:hover{color:var(--violet);background:var(--mist)}
+.brands span:nth-child(odd){font-family:Georgia,serif;letter-spacing:.02em}
+.brands span:nth-child(3n){font-family:var(--f-display);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase}
+@media (max-width:760px){.brands{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:460px){.brands{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.holding{display:flex;flex-wrap:wrap;gap:8px 26px}
+.holding span{font-family:var(--f-display);font-weight:600;font-size:.95rem;color:var(--muted)}
+
+/* ---------- close ---------- */
+.close .h-xl{font-size:clamp(2.4rem,1.2rem + 5.4vw,6.4rem)}
+.close .tagline{font-size:var(--step-2);font-weight:300;font-family:var(--f-body);line-height:1.2}
+.close .tagline b{font-weight:700}
+.contact{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;font-size:.9rem}
+.contact h4{font-family:var(--f-body);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-bottom:6px;font-weight:700}
+.contact p{color:var(--graphite);line-height:1.6}
+@media (max-width:820px){.contact{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.copy-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:2px 8px;font-size:.7rem;font-weight:600;margin-left:6px}
+
+@media (max-width:820px){
+  .slide{padding-block:84px 56px}
+  .mast .wm{height:22px}
+  .icons{display:none}
+  .rm-stage{min-height:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+
+</style>
+<div class="progress" id="progress"></div>
+<header class="mast">
+  <a href="#hero" aria-label="Inicio"><img class="wm k" src="assets/logo-avalon.svg" alt="Avalon World Agency®"><img class="wm w" src="assets/logo-avalon-white.svg" alt="Avalon World Agency®"></a>
+  <div class="mast-r">
+    <div class="icons" aria-hidden="true"><img src="assets/dots.png" alt=""><img src="assets/bolt.png" alt=""><img src="assets/ribbon.png" alt=""><img src="assets/arrow.png" alt=""><img src="assets/circle.png" alt=""></div>
+    <span class="counter num" id="counter">01 / 22</span>
+    <button class="menu-btn" id="menuBtn" aria-haspopup="dialog"><i></i>Índice</button>
+  </div>
+</header>
+
+<div class="index" id="index" hidden role="dialog" aria-label="Índice del deck">
+  <nav class="index-panel" id="indexPanel">
+    <button class="index-close" id="indexClose">Cerrar</button>
+    <h3>AvaMathic™ · Programmatic</h3>
+  </nav>
+</div>
+
+<main id="deck">
+
+<!-- 01 HERO -->
+<section class="slide" id="hero" data-title="Portada">
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="wrap stack" style="gap:22px">
+    <div class="brandline rv"><img src="assets/logo-corto.svg" alt="">Avalon World Agency® · Credenciales 2026</div>
+    <h1 class="h-xl rv">Ava<span class="v">Mathic</span>™<br><span style="white-space:nowrap">Programmatic<span class="dot"></span></span></h1>
+    <p class="tag rv">La unidad de compra programática de Avalon World Agency®. Tecnología, <b>medios premium</b>, <b>audiencias curadas</b> y <b>formatos que se recuerdan</b>, en una sola operación.</p>
+    <div class="ticker rv" aria-live="off">
+      <div><b class="num" id="tkAuctions">0</b><span>requests en nuestra red desde que abriste este deck</span></div>
+      <div><b>+80K</b><span>sitios y apps premium</span></div>
+      <div><b>&lt;100 ms</b><span>para decidir cada impresión</span></div>
+    </div>
+    <div class="hero-cta rv">
+      <button class="btn" id="playTeaser"><span class="tri"></span>Ver teaser con locución · 43 s</button>
+      <a class="btn ghost" href="#manifiesto">Recorrer el deck</a>
+    </div>
+  </div>
+  <span class="slide-tag">Usá ↑ ↓ o el índice para navegar</span>
+</section>
+
+<!-- 02 MANIFIESTO -->
+<section class="slide mesh manifest" id="manifiesto" data-title="Qué es AvaMathic">
+  <div class="wrap stack" style="gap:28px">
+    <span class="eyebrow rv">Qué es AvaMathic</span>
+    <h2 class="h-l rv">Cada impresión es una <span class="v">decisión</span> que tomamos con datos.</h2>
+    <p class="lead rv">Programmatic es la compra automatizada de publicidad en tiempo real: en cada carga de página, app, stream o pantalla se subasta un espacio, y nuestra tecnología decide en milisegundos si vale la pena mostrar tu marca a esa persona, en ese contexto y a ese precio.</p>
+    <div class="pillars rv">
+      <div class="pillar"><img src="assets/bolt.png" alt=""><h3>Tecnología</h3><p>Acceso a los principales DSP del mercado, con Display &amp; Video 360 como plataforma núcleo y optimización algorítmica en tiempo real.</p></div>
+      <div class="pillar"><img src="assets/dots.png" alt=""><h3>Audiencias curadas</h3><p>Segmentos construidos con data propia, de terceros y señales de contexto, ubicación e intención, ajustados a cada objetivo de negocio.</p></div>
+      <div class="pillar"><img src="assets/ribbon.png" alt=""><h3>Formatos</h3><p>Native, rich media, gaming, audio, video, TV conectada, DOOH y formatos de alto impacto, con producción creativa propia.</p></div>
+    </div>
+  </div>
+  <span class="slide-tag">02 · Manifiesto</span>
+</section>
+
+<!-- 03 RTB -->
+<section class="slide night mesh" id="como-funciona" data-title="Cómo funciona">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">Cómo funciona</span>
+      <h2 class="h-l rv">Una subasta completa en menos de <span class="v">100 ms</span>.</h2>
+      <p class="lead rv">Cuando alguien abre un sitio, una app o un contenido en su Smart TV, el publisher ofrece ese espacio. Los DSP leen las señales del usuario y del contexto, pujan, y gana el anuncio con mejor relación entre valor y precio. Todo pasa antes de que la página termine de cargar.</p>
+      <div class="rv"><button class="btn" id="runAuction"><span class="tri"></span>Simular una subasta</button></div>
+      <p class="small rv">Simulación ilustrativa con señales y precios de ejemplo.</p>
+    </div>
+    <div class="rtb rv" aria-live="polite">
+      <div class="rtb-top"><span class="eyebrow">Real-time bidding</span><span class="ms" id="msClock">0<small>ms</small></span></div>
+      <div class="user-card"><div class="avatar"></div><div><b id="uTitle">Esperando una impresión…</b><div class="sig" id="uSig"></div></div></div>
+      <div class="steps-rtb" id="rtbSteps"><div>1 · Bid request</div><div>2 · Lectura de señales</div><div>3 · Puja de DSPs</div><div>4 · Ganador</div><div>5 · Anuncio servido</div></div>
+      <div class="bids" id="bids"></div>
+      <div class="won-ad" id="wonAd"><span id="wonTxt">Tu marca, frente a la persona indicada.</span><span class="small" style="color:#fff">Ad</span></div>
+    </div>
+  </div>
+  <span class="slide-tag">03 · Real-time bidding</span>
+</section>
+
+<!-- 04 DIFERENCIAL -->
+<section class="slide mesh alt" id="diferencial" data-title="Nuestro diferencial">
+  <div class="wrap stack" style="gap:28px">
+    <span class="eyebrow rv">Por qué Avalon World Agency®</span>
+    <h2 class="h-l rv">Seis razones para comprar <span class="v">programmatic</span> con nosotros.</h2>
+    <div class="diff rv">
+      <div><span class="k">TECNOLOGÍA</span><h3>Multi-DSP y acceso directo</h3><p>Operamos Display &amp; Video 360 como reseller de inventario y sumamos DSPs especializados en CTV, audio, nativo e in-game, sin quedar atados a una sola plataforma.</p></div>
+      <div><span class="k">AUDIENCIAS</span><h3>Curaduría propia</h3><p>Armamos cada segmento cruzando data de partners como LoopMe, Acxiom, Alliant y Lotame con señales de contexto, geolocalización e intención.</p></div>
+      <div><span class="k">CREATIVIDAD</span><h3>Estudio creativo in-house</h3><p>Diseñamos y adaptamos las piezas de rich media, video y CTV en el mismo equipo que planifica, así el formato y la idea nacen juntos.</p></div>
+      <div><span class="k">FINANCIAMIENTO</span><h3>Línea de crédito publicitario</h3><p>Financiamos la inversión en pauta para que la campaña escale sin cortes por medios de pago y sin comprometer el flujo de caja.</p></div>
+      <div><span class="k">CONTROL</span><h3>Brand safety verificado</h3><p>Medición independiente con IAS, DoubleVerify, MOAT y Pixalate, listas de inclusión y exclusión, y tráfico humano verificable.</p></div>
+      <div><span class="k">ALCANCE</span><h3>Presencia en cinco países</h3><p>Equipos en Buenos Aires, San Pablo, Barcelona, Dubái y Miami para activar campañas locales, regionales o globales.</p></div>
+    </div>
+  </div>
+  <span class="slide-tag">04 · Diferencial</span>
+</section>
+
+<!-- 05 STACK -->
+<section class="slide night" id="tecnologia" data-title="Ecosistema tecnológico">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">Ecosistema</span>
+      <h2 class="h-l rv">La <span class="v">tecnología</span> que mueve cada campaña.</h2>
+      <p class="lead rv">Tocá cada nodo para ver qué hace dentro de la cadena de compra.</p>
+      <div class="eco-info rv" id="ecoInfo" aria-live="polite"><h4>AvaMathic</h4><p>Planificamos, compramos y optimizamos desde una sola mesa de operaciones, conectada a todo el ecosistema.</p></div>
+    </div>
+    <div class="eco rv" id="eco"></div>
+  </div>
+  <span class="slide-tag">05 · Ad tech stack</span>
+</section>
+
+<!-- 06 INVENTARIO -->
+<section class="slide mesh" id="inventario" data-title="Medios y publishers">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">Medios y publishers</span>
+      <h2 class="h-l rv">Inventario <span class="v">worldwide</span>, con foco en entornos premium.</h2>
+      <div class="big-n rv"><div><b>+80K</b><span>sitios y apps premium</span></div><div><b>+7B</b><span>requests mensuales en display y video</span></div><div><b>11K</b><span>publishers en red nativa</span></div></div>
+      <div class="stack rv" style="gap:10px">
+        <span class="small" style="font-weight:600">Algunos publishers disponibles</span>
+        <div class="pubs"><span>The Guardian</span><span>The Telegraph</span><span>The Wall Street Journal</span><span>ELLE</span><span>CBS</span><span>News Corp</span><span>Bloomberg Businessweek</span><span>ITV</span><span>Zynga</span><span>EA Mobile</span><span>SoundHound</span><span>WordPress</span><span>Infobae</span><span>Clarín</span><span>La Nación</span><span>El Cronista</span><span>Perfil</span><span>C5N</span><span>Spotify</span><span>YouTube</span></div>
+      </div>
+    </div>
+    <div class="stack rv">
+      <div class="map" id="mapBox"><canvas id="mapCanvas" aria-label="Mapa de inventario disponible por región"></canvas></div>
+      <p class="src">Impresiones disponibles por región según partners de inventario: Norteamérica 3,1T · Europa 850B · Asia 450B · Sudamérica 250B · Medio Oriente 100B · África 85B.</p>
+    </div>
+  </div>
+  <span class="slide-tag">06 · Inventario</span>
+</section>
+
+<!-- 07 AUDIENCIAS -->
+<section class="slide mesh alt" id="audiencias" data-title="Audiencias curadas">
+  <div class="wrap stack" style="gap:24px">
+    <div class="stack" style="gap:12px">
+      <span class="eyebrow rv">Audiencias curadas</span>
+      <h2 class="h-l rv">Armá tu audiencia y mirá cómo se <span class="v">afina</span>.</h2>
+    </div>
+    <div class="aud rv">
+      <div class="aud-groups" id="audGroups"></div>
+      <div class="aud-out">
+        <span class="eyebrow">Tu segmento</span>
+        <canvas id="audCanvas" aria-hidden="true"></canvas>
+        <div class="meter"><div class="row"><span>Usuarios alcanzables</span><b id="audReach">—</b></div><div class="t"><i id="audReachBar" style="background:var(--turq)"></i></div></div>
+        <div class="meter"><div class="row"><span>Precisión del segmento</span><b id="audPrec">—</b></div><div class="t"><i id="audPrecBar" style="background:#b07bff"></i></div></div>
+        <p class="small" id="audDesc" style="color:rgba(255,255,255,.75)"></p>
+        <p class="src">Estimación ilustrativa para Argentina. Las cifras reales salen del forecast del DSP para cada campaña.</p>
+      </div>
+    </div>
+    <div class="presets rv" id="presets"></div>
+  </div>
+  <span class="slide-tag">07 · Audiencias</span>
+</section>
+
+<!-- 08 GEO -->
+<section class="slide night mesh" id="geo" data-title="Geo histórica y App Verify">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">Data de ubicación y apps</span>
+      <h2 class="h-l rv">Del mundo físico al <span class="v">digital</span>.</h2>
+      <p class="lead rv"><b>Geo histórica</b> identifica dispositivos que visitaron puntos de interés, como tus locales o los de la competencia, y los impacta después en digital. <b>App Verify</b> decide si mostrar el anuncio según las apps instaladas: banca, e-commerce, citas, delivery o gaming.</p>
+      <div class="chips rv"><span class="chip">Geofencing en tiempo real</span><span class="chip">Geo histórica</span><span class="chip">Location data sin datos personales</span><span class="chip">App Verify</span><span class="chip">Retargeting post visita</span></div>
+    </div>
+    <div class="geo rv"><canvas id="geoCanvas" aria-label="Simulación de geofencing en una ciudad"></canvas><span class="geo-count num" id="geoCount">0 dispositivos capturados</span>
+      <div class="geo-legend"><span><i style="background:#ff5a1f"></i>Local de tu marca</span><span><i style="background:#3ad8d4"></i>Local competencia</span><span><i style="background:#b07bff"></i>Dispositivo capturado</span></div></div>
+  </div>
+  <span class="slide-tag">08 · Geo histórica</span>
+</section>
+
+<!-- 09 FORMATOS -->
+<section class="slide mesh" id="formatos" data-title="Formatos">
+  <div class="wrap stack" style="gap:24px">
+    <span class="eyebrow rv">Formatos</span>
+    <h2 class="h-l rv">Ocho canales, cada uno con su <span class="v">demo en vivo</span>.</h2>
+    <div class="fx rv">
+      <a href="#native"><span class="glyph" style="background:var(--violet)"></span><span class="n">01</span><div><h3>Native Ads</h3><p>Taboola Realize y redes nativas</p></div></a>
+      <a href="#rich-media"><span class="glyph" style="background:var(--orange)"></span><span class="n">02</span><div><h3>Rich Media</h3><p>Cubo, countdown, trivias, scroll</p></div></a>
+      <a href="#gaming"><span class="glyph" style="background:var(--green)"></span><span class="n">03</span><div><h3>Gaming &amp; Apps</h3><p>Rewarded, playables, interstitial</p></div></a>
+      <a href="#audio"><span class="glyph" style="background:#1ed760"></span><span class="n">04</span><div><h3>Audio</h3><p>Spotify, streaming y podcasts</p></div></a>
+      <a href="#video"><span class="glyph" style="background:#ff3b3b"></span><span class="n">05</span><div><h3>Video</h3><p>YouTube, instream y outstream</p></div></a>
+      <a href="#ctv"><span class="glyph" style="background:var(--indigo)"></span><span class="n">06</span><div><h3>Connected TV</h3><p>Smart TV, FAST y streaming</p></div></a>
+      <a href="#dooh"><span class="glyph" style="background:var(--turq)"></span><span class="n">07</span><div><h3>DOOH</h3><p>Pantallas digitales en vía pública</p></div></a>
+      <a href="#innovacion"><span class="glyph" style="background:#ffd84d"></span><span class="n">08</span><div><h3>Innovadores</h3><p>Hypelink, CGI, vallas virtuales, AR</p></div></a>
+    </div>
+  </div>
+  <span class="slide-tag">09 · Formatos</span>
+</section>
+
+<!-- 10 NATIVE -->
+<section class="slide mesh alt" id="native" data-title="Native Ads">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">01 · Native Ads · powered by Taboola Realize</span>
+      <h2 class="h-l rv">Performance a escala en la <span class="v">open web</span>.</h2>
+      <p class="lead rv">Anuncios que adoptan el lenguaje del medio donde aparecen, en los módulos de recomendación de los principales publishers. Se leen como contenido, se compran por resultado y escalan como una red social.</p>
+      <div class="stats rv"><div class="stat"><b>600M</b><span>usuarios activos diarios</span></div><div class="stat"><b>11K</b><span>publishers premium</span></div><div class="stat"><b>400</b><span>modelos de IA entrenados por día</span></div></div>
+      <div class="bench rv"><span>CTR <b>0,5–4%</b></span><span>Viewability <b>70–90%</b></span><span>Predictive Audiences <b>1,23x</b> más conversiones por dólar</span></div>
+      <div class="buy rv"><span>CPC</span><span>CPM</span><span>PMP</span><span>DIRECTO</span></div>
+      <p class="src rv">Fuentes: Taboola Realize 2025 y benchmarks de partners.</p>
+    </div>
+    <div class="stack rv" style="gap:14px">
+      <div class="tabs" role="tablist" id="nativeTabs"><button role="tab" aria-selected="true" data-k="feed">Feed nativo</button><button role="tab" aria-selected="false" data-k="carousel">Carrusel</button><button role="tab" aria-selected="false" data-k="vertical">Vertical</button><button role="tab" aria-selected="false" data-k="motion">Native Motion</button></div>
+      <div class="pub-page">
+        <div class="pub-bar"><b>El Matutino</b><span>Economía · Hoy 09:42</span></div>
+        <div class="pub-body" id="nativeBody"></div>
+      </div>
+      <p class="small">Medio y marcas ficticias, a modo de ejemplo.</p>
+    </div>
+  </div>
+  <span class="slide-tag">10 · Native</span>
+</section>
+
+<!-- 11 RICH MEDIA -->
+<section class="slide mesh" id="rich-media" data-title="Rich Media">
+  <div class="wrap rm">
+    <div class="stack">
+      <span class="eyebrow rv">02 · Rich Media</span>
+      <h2 class="h-l rv">Anuncios que se <span class="v">tocan</span>.</h2>
+      <p class="lead rv">Formatos que se expanden, giran, cuentan y preguntan. Elegí uno y probalo en el celular.</p>
+      <div class="rm-list rv" role="tablist" id="rmList"></div>
+      <div class="bench rv" id="rmBench"></div>
+    </div>
+    <div class="rm-stage rv"><div class="phone"><div class="scr" id="rmScreen"></div></div></div>
+  </div>
+  <span class="slide-tag">11 · Rich media</span>
+</section>
+
+<!-- 12 GAMING -->
+<section class="slide night mesh" id="gaming" data-title="Gaming y Apps">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">03 · Gaming &amp; Apps</span>
+      <h2 class="h-l rv">La marca entra al <span class="v">juego</span>.</h2>
+      <p class="lead rv">Publicidad dentro de juegos mobile y apps: video recompensado, interstitials, playables y anuncios integrados en el entorno del juego. El jugador elige ver el anuncio a cambio de un beneficio, y esa elección se nota en la atención.</p>
+      <div class="stats rv"><div class="stat"><b>152M</b><span>usuarios in-game en Latinoamérica</span></div><div class="stat"><b>28,2 min</b><span>de atención cada mil impresiones, contra 5,3 en display mobile</span></div><div class="stat"><b>85–98%</b><span>VCR en rewarded video</span></div></div>
+      <div class="cats rv"><span>Arcade</span><span>Puzzle</span><span>Estrategia</span><span>Deportes</span><span>Acción</span><span>Casual</span></div>
+      <p class="src rv">Fuentes: partners de inventario in-game y estudio de atención de Lumen.</p>
+    </div>
+    <div class="stack rv" style="align-items:center;gap:14px">
+      <div class="tabs" role="tablist" id="gameTabs"><button role="tab" aria-selected="true" data-k="play">Playable</button><button role="tab" aria-selected="false" data-k="reward">Rewarded video</button></div>
+      <div class="phone"><div class="scr game-scr" id="gameScreen"></div></div>
+      <p class="small">Jugá: encontrá los pares del brand kit.</p>
+    </div>
+  </div>
+  <span class="slide-tag">12 · Gaming</span>
+</section>
+
+<!-- 13 AUDIO -->
+<section class="slide night" id="audio" data-title="Audio y Spotify">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">04 · Audio · canal Spotify</span>
+      <h2 class="h-l rv">Tu marca, en el <span class="v">momento</span> que suena.</h2>
+      <p class="lead rv">Compramos Spotify por programática con 100% share of voice: cuando suena tu anuncio, no hay otro. Segmentamos por playlist, género, momento del día y plataforma, y extendemos el alcance a radios online y podcasts.</p>
+      <div class="stats rv"><div class="stat"><b>675M</b><span>usuarios activos en el mundo</span></div><div class="stat"><b>14M</b><span>usuarios mensuales en Argentina</span></div><div class="stat"><b>42 min</b><span>de escucha por día</span></div><div class="stat"><b>97%</b><span>listen-through rate en audio, 95% VTR en video</span></div></div>
+      <p class="src rv">Fuentes: Spotify Q4 2024 Earnings Report y Spotify Advertiser Insights.</p>
+    </div>
+    <div class="stack rv" style="gap:14px">
+      <div class="player" id="player">
+        <span class="small" style="color:#b3b3b3">Elegí un momento del oyente</span>
+        <div class="moods" id="moods"></div>
+        <div class="np"><div class="cover" id="cover"></div><div class="meta"><span id="plLabel">Playlist</span><b id="plName">Workout</b><span id="plState">Reproduciendo · música</span></div></div>
+        <canvas class="wave" id="wave" aria-hidden="true"></canvas>
+        <div class="pbar"><i id="pbar"></i></div>
+        <div class="pl-ctl"><span class="ad-state" id="adState">Música</span><button id="plPlay" aria-label="Reproducir"><svg width="18" height="18" viewBox="0 0 18 18"><path id="plIcon" d="M5 3l10 6-10 6z" fill="#000"/></svg></button><span class="small" style="color:#b3b3b3" id="plTime">0:00</span></div>
+        <div class="companion" id="companion"><div><b>Zapatillas Pulso</b><div style="font-size:.78rem">Zapatillas que siguen tu ritmo · 20% off</div></div><span class="ad-cta">Comprar</span></div>
+      </div>
+      <p class="small" style="color:rgba(255,255,255,.55)">Tocá play: después de unos segundos de música entra un spot de audio con companion banner. Marca ficticia.</p>
+    </div>
+  </div>
+  <span class="slide-tag">13 · Audio</span>
+</section>
+
+<!-- 14 AUDIO 2 -->
+<section class="slide night mesh" id="audio-segmentacion" data-title="Segmentación en Spotify">
+  <div class="wrap grid2 even">
+    <div class="stack">
+      <span class="eyebrow rv">Spotify · segmentación</span>
+      <h2 class="h-l rv">Por <span class="v">playlist</span> y por género.</h2>
+      <p class="lead rv">Llegamos a usuarios que escuchan música alineada con actividades diarias, momentos de vida, estados de ánimo y fechas estacionales, o justo después de escuchar un género específico.</p>
+      <div class="stack rv" style="gap:8px"><span class="eyebrow">Formatos</span>
+        <div class="chips"><span class="chip">Audio Everywhere + companion</span><span class="chip">Video Takeover</span><span class="chip">Sponsored Session</span><span class="chip">Leaderboard desktop</span><span class="chip">Podcast ads</span><span class="chip">Audio 3D / binaural</span></div></div>
+      <div class="buy rv"><span>PMP</span><span>PROGRAMMATIC GUARANTEED</span><span>CPM</span></div>
+    </div>
+    <div class="stack rv" style="gap:22px">
+      <div><span class="eyebrow">Playlists</span><div class="seg-list" style="margin-top:8px"><span>Chill</span><span>Commute</span><span>Dinner</span><span>Focus / Study</span><span>Girls Night Out</span><span>Holidays</span><span>Kids</span><span>Party</span><span>Road Trip</span><span>Romance</span><span>Sleep</span><span>Summer</span><span>Travel</span><span>Workout</span><span>Yoga</span></div></div>
+      <div><span class="eyebrow">Géneros</span><div class="seg-list" style="margin-top:8px"><span>Urbano latino</span><span>Rock nacional</span><span>Cumbia</span><span>Cuarteto</span><span>Pop</span><span>Trap latino</span><span>Electrónica</span><span>Indie</span><span>Hip hop</span><span>Jazz</span><span>Reggae</span><span>Clásica</span><span>Folk</span><span>Metal</span><span>R&amp;B</span></div></div>
+      <div class="stats"><div class="stat"><b>33%</b><span>de los oyentes de LATAM tiene entre 18 y 24 años</span></div><div class="stat"><b>30%</b><span>escucha al mediodía, la franja más fuerte</span></div></div>
+    </div>
+  </div>
+  <span class="slide-tag">14 · Spotify</span>
+</section>
+
+<!-- 15 VIDEO -->
+<section class="slide mesh alt" id="video" data-title="Video">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">05 · Video · YouTube y open web</span>
+      <h2 class="h-l rv">Video que se <span class="v">ve completo</span>.</h2>
+      <p class="lead rv">Compramos YouTube por Display &amp; Video 360 y video premium de la open web, instream y outstream, con verificación de visibilidad en cada impresión.</p>
+      <div class="yt-formats rv"><div><b>In-stream skippable</b><span>Pre, mid y post roll. Pagás por vista completa.</span></div><div><b>Bumper 6 s</b><span>Frecuencia y recordación a bajo costo.</span></div><div><b>Non-skippable 15 s</b><span>Mensaje completo garantizado.</span></div><div><b>Shorts</b><span>Vertical, entre contenidos de creadores.</span></div><div><b>Outstream</b><span>Video dentro del artículo, se activa al scrollear.</span></div><div><b>InText video</b><span>Integrado en el texto editorial.</span></div></div>
+      <div class="stats rv"><div class="stat"><b>150M</b><span>alcance en Latinoamérica</span></div><div class="stat"><b>25M</b><span>hispanos en EE.UU.</span></div><div class="stat"><b>+30%</b><span>ROI frente a compra tradicional de video</span></div></div>
+    </div>
+    <div class="stack rv" style="gap:14px">
+      <div class="tabs" role="tablist" id="videoTabs"><button role="tab" aria-selected="true" data-k="skip">Skippable</button><button role="tab" aria-selected="false" data-k="bumper">Bumper 6 s</button><button role="tab" aria-selected="false" data-k="out">Outstream</button></div>
+      <div class="vplayer" id="vplayer"></div>
+      <div class="bench" id="videoBench"></div>
+    </div>
+  </div>
+  <span class="slide-tag">15 · Video</span>
+</section>
+
+<!-- 16 CTV -->
+<section class="slide night mesh" id="ctv" data-title="Connected TV">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">06 · Connected TV</span>
+      <h2 class="h-l rv">La pantalla grande, con la data del <span class="v">ad tech</span>.</h2>
+      <p class="lead rv">Pantalla completa, sonido activo y una audiencia que eligió qué mirar. Compramos CTV por audiencia, contenido y geografía, y lo potenciamos con capas interactivas.</p>
+      <div class="stats rv"><div class="stat"><b>80–100%</b><span>viewability</span></div><div class="stat"><b>85–95%</b><span>VCR</span></div><div class="stat"><b>+22M</b><span>sesiones mensuales en la red O&amp;O</span></div></div>
+      <div class="platforms rv"><span>Samsung TV Plus</span><span>Pluto TV</span><span>Roku</span><span>Fire TV</span><span>Android TV</span><span>Apple TV</span><span>LG Channels</span><span>Apps FAST</span></div>
+    </div>
+    <div class="stack rv" style="gap:16px">
+      <div class="tabs" role="tablist" id="ctvTabs"><button role="tab" aria-selected="true" data-k="std">Spot estándar</button><button role="tab" aria-selected="false" data-k="qr">CTV QR</button><button role="tab" aria-selected="false" data-k="lshape">L-Shape</button><button role="tab" aria-selected="false" data-k="pause">Pause ad</button><button role="tab" aria-selected="false" data-k="int">Emoji</button></div>
+      <div>
+        <div class="tv" id="tv">
+          <video id="ctvVideo" src="assets/ctv-contigo.mp4" poster="assets/ctv-poster.jpg" playsinline muted loop preload="metadata"></video>
+          <div class="lframe"><div class="lr"><b>Hay un lugar para vos</b><span class="ad-cta">Conocé los planes</span></div><div class="lb"><span>Contigo Salud</span>Hay un lugar para vos</div></div>
+          <div class="qr"><div id="qrBox"></div><small>Escaneá y cotizá</small></div>
+          <div class="pause"><div class="pcard"><small>Contigo Salud</small><b>Hay un lugar para vos.</b><span class="ad-cta">Conocé los planes</span></div></div>
+          <div class="react"><button data-e="+1">👍</button><button data-e="♥">❤️</button><button data-e="!">😮</button><button data-e="ja">😂</button></div>
+          <span class="badge" id="ctvBadge">AD · 0:30</span>
+          <button class="play-big" id="ctvPlay" aria-label="Reproducir ejemplo CTV"><span></span></button>
+        </div>
+        <div class="tv-stand"></div>
+      </div>
+      <p class="small" id="ctvNote">Ejemplo de pieza CTV en su corte publicitario. Las capas interactivas se simulan sobre el video.</p>
+    </div>
+  </div>
+  <span class="slide-tag">16 · CTV</span>
+</section>
+
+<!-- 17 DOOH -->
+<section class="slide mesh" id="dooh" data-title="DOOH">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">07 · Digital out-of-home</span>
+      <h2 class="h-l rv">Vía pública que <span class="v">reacciona</span>.</h2>
+      <p class="lead rv">Compramos pantallas digitales por programática, por hora y por audiencia, con creatividades que cambian según el clima, el horario o un resultado en vivo. Después, impactamos en mobile a quienes pasaron frente a la pantalla.</p>
+      <div class="stats rv"><div class="stat"><b>15.000</b><span>pantallas digitales en Latinoamérica</span></div><div class="stat"><b>:15 s</b><span>spots estáticos, animados o video</span></div></div>
+      <div class="dooh-ctl rv">
+        <span class="small" style="font-weight:600">Cambiá las condiciones y mirá la pantalla</span>
+        <div class="tabs" role="tablist" id="doohWeather"><button role="tab" aria-selected="true" data-k="sun">☀ Sol</button><button role="tab" aria-selected="false" data-k="rain">🌧 Lluvia</button><button role="tab" aria-selected="false" data-k="cold">❄ Frío</button></div>
+        <div class="tabs" role="tablist" id="doohTime"><button role="tab" aria-selected="true" data-k="am">Mañana</button><button role="tab" aria-selected="false" data-k="pm">Tarde</button><button role="tab" aria-selected="false" data-k="night">Noche</button><button role="tab" aria-selected="false" data-k="match">Partido en vivo</button></div>
+        <p class="trigger-log" id="doohLog"></p>
+      </div>
+    </div>
+    <div class="city rv" id="city"><canvas id="cityCanvas" aria-hidden="true"></canvas><div class="bb-pole"></div><div class="billboard" id="billboard"></div></div>
+  </div>
+  <span class="slide-tag">17 · DOOH</span>
+</section>
+
+<!-- 18 INNOVACIÓN -->
+<section class="slide night mesh" id="innovacion" data-title="Formatos innovadores">
+  <div class="wrap stack" style="gap:20px">
+    <span class="eyebrow rv">08 · Innovadores y disruptivos</span>
+    <h2 class="h-l rv">Lo que todavía <span class="v">no viste</span> en una pauta.</h2>
+    <div class="inno rv" id="inno"></div>
+    <div class="inno-detail rv" id="innoDetail" aria-live="polite"></div>
+  </div>
+  <span class="slide-tag">18 · Innovación</span>
+</section>
+
+<!-- 19 MEDICIÓN -->
+<section class="slide mesh alt" id="medicion" data-title="Medición y brand safety">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">Medición y brand safety</span>
+      <h2 class="h-l rv">Cada impresión, <span class="v">verificada</span>.</h2>
+      <p class="lead rv">Reportamos con verificadores independientes y medimos más allá del clic: atención, brand lift y conversiones atribuidas.</p>
+      <div class="vendors rv"><span>IAS</span><span>DoubleVerify</span><span>MOAT</span><span>Pixalate</span><span>Comscore</span><span>Lotame</span></div>
+      <div class="checks rv"><div>ads.txt, sellers.json y Supply Chain Object</div><div>Certificación TAG y Coalition for Better Ads</div><div>Listas de inclusión y exclusión por marca</div><div>Brand lift con grupo expuesto y control</div><div>Métricas de atención por impresión</div><div>Cumplimiento GDPR y leyes locales de datos</div></div>
+    </div>
+    <div class="dash rv">
+      <div class="dash-top"><b style="font-family:var(--f-display)">Campaña de ejemplo</b><span class="live">EN VIVO</span></div>
+      <div class="kpis"><div><b id="kImp" class="num">0</b><span>impresiones</span></div><div><b class="num">100%</b><span>brand safe</span></div><div><b id="kVcr" class="num">0%</b><span>completion rate</span></div><div><b id="kHum" class="num">0%</b><span>humano y visible</span></div></div>
+      <canvas id="dashCanvas" aria-label="Gráfico de impresiones por hora"></canvas>
+      <p class="src">Benchmarks AvaMathic: 100% marca segura y transparente, 80%+ tasa de finalización y 90%+ tráfico humano y visible. Datos del tablero simulados.</p>
+    </div>
+  </div>
+  <span class="slide-tag">19 · Medición</span>
+</section>
+
+<!-- 20 COMPRA -->
+<section class="slide mesh" id="compra" data-title="Modelos de compra">
+  <div class="wrap stack" style="gap:22px">
+    <span class="eyebrow rv">Modelos de compra</span>
+    <h2 class="h-l rv">Elegimos cómo comprar según el <span class="v">objetivo</span>.</h2>
+    <div class="models rv">
+      <div><b>Open Auction</b><span>Máximo alcance y eficiencia de costo, con filtros de calidad propios.</span><small class="small">Control</small><div class="lvl"><i class="on"></i><i></i><i></i><i></i></div></div>
+      <div><b>Private Auction (PMP)</b><span>Inventario seleccionado de publishers premium, con precio piso negociado.</span><small class="small">Control</small><div class="lvl"><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <div><b>Preferred Deals</b><span>Prioridad de compra sobre el inventario de un publisher a precio fijo.</span><small class="small">Control</small><div class="lvl"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <div><b>Programmatic Guaranteed</b><span>Volumen, precio y ubicación garantizados, con la flexibilidad de la compra automatizada.</span><small class="small">Control</small><div class="lvl"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+    </div>
+    <div class="buy rv"><span>CPM</span><span>vCPM</span><span>CPC</span><span>CPV</span><span>CPCV</span><span>CPE</span><span>CPL</span></div>
+    <div class="credit rv"><div><h3>Línea de crédito publicitario</h3><p>Financiamos la inversión en medios de nuestros clientes para escalar campañas sin cortes por pagos con tarjeta y sin comprometer el flujo de caja.</p></div><img src="assets/logo-alt-white.png" alt="" style="height:52px;width:auto"></div>
+  </div>
+  <span class="slide-tag">20 · Compra</span>
+</section>
+
+<!-- 21 METODOLOGÍA + MARCAS -->
+<section class="slide mesh alt" id="metodologia" data-title="Metodología y marcas">
+  <div class="wrap stack" style="gap:30px">
+    <span class="eyebrow rv">Avalon Blueprint™ aplicado a programmatic</span>
+    <h2 class="h-m rv">Cinco pasos, de la estrategia al <span class="v">reporte</span>.</h2>
+    <div class="proc rv">
+      <div><span class="n">1</span><h3>Diagnóstico</h3><p>Objetivos de negocio, KPIs, público y benchmark de la categoría.</p></div>
+      <div><span class="n">2</span><h3>Audiencias</h3><p>Curaduría de segmentos y forecast de alcance por canal.</p></div>
+      <div><span class="n">3</span><h3>Plan y creatividad</h3><p>Mix de formatos, piezas adaptadas y modelo de compra.</p></div>
+      <div><span class="n">4</span><h3>Activación</h3><p>Lanzamiento, verificación y optimización diaria.</p></div>
+      <div><span class="n">5</span><h3>Reporte</h3><p>Resultados, aprendizajes y brand lift para la próxima ola.</p></div>
+    </div>
+    <div class="stack rv" style="gap:12px">
+      <span class="eyebrow">Marcas y artistas con los que trabajamos</span>
+      <div class="brands" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))"><span>Disney World</span><span>Disney Cruise Line</span><span>Marriott</span><span>Canela.TV</span><span>Toyo Tires</span><span>Tanqueray</span><span>Johnnie Walker</span><span>Diageo</span><span>Clarins</span><span>Sephora</span><span>Nintendo</span><span>Don Omar</span><span>Peso Pluma</span></div>
+    </div>
+    <div class="stack rv" style="gap:8px"><span class="small" style="font-weight:600">Partners y holdings</span><div class="holding"><span>PHD</span><span>IPG</span><span>dentsu</span><span>Starcom</span><span>OMD</span><span>Havas Media</span><span>OMG</span><span>Publicis Media</span><span>Kinesso</span><span>Badillo Saatchi &amp; Saatchi</span><span>Meta Business Partner</span></div></div>
+  </div>
+  <span class="slide-tag">21 · Metodología</span>
+</section>
+
+<!-- 22 CIERRE -->
+<section class="slide mesh close" id="contacto" data-title="Contacto">
+  <div class="wrap stack" style="gap:30px">
+    <img src="assets/logo-alt-black.png" alt="" class="rv" style="height:56px;width:auto;align-self:flex-start">
+    <h2 class="h-xl rv">Hablemos de tu próxima <span class="v">campaña</span>.</h2>
+    <p class="tagline rv">No hay nada más fuerte que una <b>idea</b><span class="dot"></span></p>
+    <div class="contact rv">
+      <div><h4>Web</h4><p>avalonworldagency.com<br>avalon3.com</p></div>
+      <div><h4>Email</h4><p><span id="mail">info@avalon3.com</span><button class="copy-btn" data-copy="info@avalon3.com">Copiar</button></p></div>
+      <div><h4>Teléfonos</h4><p>+54 9 11 7021-2823<br>+54 9 11 6954-3008</p></div>
+      <div><h4>Redes</h4><p>Instagram @avalonworldagency<br>Facebook avaloncreativestudio</p></div>
+    </div>
+    <p class="small rv">Oficinas en Buenos Aires, San Pablo, Barcelona, Dubái y Miami. Avalon World Agency® es Meta Business Partner.</p>
+    <div class="rv"><button class="btn ghost" id="replayTeaser"><span class="tri"></span>Ver el teaser otra vez</button></div>
+  </div>
+  <span class="slide-tag">22 · Avalon World Agency®</span>
+</section>
+</main>
+
+<div class="teaser" id="teaser" hidden role="dialog" aria-label="Teaser AvaMathic">
+  <canvas id="teaserCanvas" aria-hidden="true"></canvas>
+  <div class="ctl"><button id="tMute">Silenciar</button><button id="tClose">Cerrar</button></div>
+  <div class="stage"><div class="line" id="tLine"></div><div class="fmts" id="tFmts"></div><div class="logo-end" id="tEnd"><img src="assets/logo-avalon-white.svg" alt="Avalon World Agency®"></div></div>
+  <div class="cc" id="tCC"></div>
+  <div class="bar" id="tBar"></div>
+  <audio id="tAudio" src="assets/teaser.mp3" preload="auto"></audio>
+</div>
+<audio id="spotAudio" src="assets/spot.mp3" preload="auto"></audio>
+
+<script>window.__LAND__=["00000000000000000000001000101000111101111111111111111111000000000000011010000000000000000000000000000100000000000000000000000000", "00000000000000000000010110101010110000000011111111111111100000000000000000000000000000110000000000111111110000000001110000000000", "00000000000000000111000010101101111000000001111111111110000000000000000000000000000010000010001111111111111100110000000000000000", "00001110000000000000101111001001111110000000011111111011000000000000000011000000000010000110111111111111111111111111111111110000", "00111111111111111111100010010110101101100000111111110000000000000000001111111110000101111010111111111111111111111111111111111111", "01111111111111111111111111111101000011101000111111000001110000000000011101111001111111111111111111111111111111111111111111111111", "10011111111111111111111111111100000001010000011110000000000000000000111011111111111111111111111111111111111111111111111111111111", "00111110111111111111111111111000000111000000001100000000000000000011110011111111111111111111111111111111111111111111111111000111", "00000110000001111111111111111000000111110000000000000000000000100010110011111111111111111111111111111111111111111111100000011000", "00001000000000011111111111111110000111111000000000000000000000100001010011111111111111111111111111111111111111111110000000111000", "00000000000000111111111111111111101111111110000000000000000011010001111111111111111111111111111111111111111111111110100000110000", "00000000000000001111111111111111111111111100000000000000000000111111111111111111111111111111111111111111111111111111110000000000", "00000000000000000111111111111111111111010011000000000000000000011111111111111111111111111111111111111111111111111111000000000000", "00000000000000000011111111111111111111111000000000000000000000001111111111101011111111111111111111111111111111111111000000000000", "00000000000000000011111111111111111111010000000000000000000000011110101111100001111111111111111111111111111111111110010000000000", "00000000000000000011111111111111111110000000000000000000000001111000010111101001111111111111111111111111111111110000000000000000", "00000000000000000011111111111111111100000000000000000000000011111000000010111111111111111111111111111111111101010000100000000000", "00000000000000000011111111111111111100000000000000000000000000000111000000001111111111111111111111111111111110010001100000000000", "00000000000000000001111111111111111000000000000000000000000001111111000000000111111111111111111111111111111110000110000000000000", "00000000000000000000111111111111110000000000000000000000000011111111110110000111111111111111111111111111111111000000000000000000", "00000000000000000000011111111000010000000000000000000000000011111111111111111111110111111111111111111111111111000000000000000000", "00000000000000000000000111110000010000000000000000000000000111111111111111111111111011111111111111111111111110000000000000000000", "00000000000000000000001011100000000000000000000000000000001111111111111111111011111010000111111111111111111100000000000000000000", "00000000000000000000000001100000101000000000000000000000001111111111111111111101111111000011111111111111110000000000000000000000", "00000000000000000000000001110010000001000000000000000000001111111111111111111101111111000001111100011111000000000000000000000000", "00000000000000000000000000111110000000000000000000000000001111111111111111111110111110000001111000011111000001000000000000000000", "00000000000000000000000000000011100000000000000000000000001111111111111111111110110000000000110000000111100000000000000000000000", "00000000000000000000000000000000100000100000000000000000001111111111111111111111000000000000110000000011100000100000000000000000", "00000000000000000000000000000000100011111000000000000000000111111111111111111111111000000000110000000001000000100000000000000000", "00000000000000000000000000000000010111111100000000000000000111111111111111111111111000000000001000000100000000100000000000000000", "00000000000000000000000000000000000111111111000000000000000001000011111111111111110000000000000000001010000100000000000000000000", "00000000000000000000000000000000000111111111100000000000000000000000111111111111100000000000000000001010001100000000000000000000", "00000000000000000000000000000000001111111111110000000000000000000001111111111111000000000000000000000110011100000000000000000000", "00000000000000000000000000000000001111111111111000000000000000000000111111111110000000000000000000000010011111000001000000000000", "00000000000000000000000000000000001111111111111111000000000000000000111111111110000000000000000000000001000001000001110000000000", "00000000000000000000000000000000001111111111111111100000000000000000011111111110000000000000000000000000110000000000111000000000", "00000000000000000000000000000000000111111111111111100000000000000000011111111110000000000000000000000000000010100000000100001000", "00000000000000000000000000000000000111111111111111000000000000000000011111111110000000000000000000000000000000000100000000000000", "00000000000000000000000000000000000011111111111110000000000000000000011111111110001000000000000000000000000000011110010000000000", "00000000000000000000000000000000000001111111111110000000000000000000111111111110011000000000000000000000000000111111010000000000", "00000000000000000000000000000000000000111111111110000000000000000000011111111000010000000000000000000000000001111111111000000000", "00000000000000000000000000000000000000111111111110000000000000000000011111111000110000000000000000000000000111111111111100000000", "00000000000000000000000000000000000000111111110000000000000000000000011111111000110000000000000000000000001111111111111110000000", "00000000000000000000000000000000000000111111110000000000000000000000001111110000000000000000000000000000001111111111111110000000", "00000000000000000000000000000000000001111111100000000000000000000000001111110000000000000000000000000000000111111111111110000000", "00000000000000000000000000000000000001111111100000000000000000000000000111100000000000000000000000000000000111110111111110000000", "00000000000000000000000000000000000001111111000000000000000000000000000100000000000000000000000000000000000110000001111100000000", "00000000000000000000000000000000000001111110000000000000000000000000000000000000000000000000000000000000000000000000111100000000", "00000000000000000000000000000000000001111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "00000000000000000000000000000000000011110000000000000000000000000000000000000000000000000000000000000000000000000000001000000000", "00000000000000000000000000000000000001110000000000000000000000000000000000000000000000000000000000000000000000000000000000000001", "00000000000000000000000000000000000011100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "00000000000000000000000000000000000011100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "00000000000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "00000000000000000000000000000000000001100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"];</script>
+<script>
+(function(){
+"use strict";
+document.documentElement.classList.add('js');
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const RM=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt=n=>n.toLocaleString('es-AR');
+const DPR=()=>Math.min(window.devicePixelRatio||1,2);
+function fitCanvas(c){const r=c.getBoundingClientRect();const d=DPR();const w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));if(c.width!==w||c.height!==h){c.width=w;c.height=h}const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return {x,w:r.width,h:r.height}}
+const visible=new Set();
+
+/* ================= NAV ================= */
+const slides=$$('.slide'); const total=slides.length;
+const counter=$('#counter'), prog=$('#progress');
+const panel=$('#indexPanel');
+slides.forEach((s,i)=>{const a=document.createElement('a');a.href='#'+s.id;a.innerHTML='<span>'+String(i+1).padStart(2,'0')+'</span>'+s.dataset.title;a.addEventListener('click',()=>closeIndex());panel.appendChild(a)});
+let cur=0;
+const io=new IntersectionObserver(es=>{es.forEach(e=>{const s=e.target; if(e.isIntersecting){visible.add(s.id);s.classList.add('seen');}else visible.delete(s.id)})
+  // current = most visible
+  let best=null,bv=0;slides.forEach((s,i)=>{const r=s.getBoundingClientRect();const v=Math.max(0,Math.min(innerHeight,r.bottom)-Math.max(0,r.top));if(v>bv){bv=v;best=i}});
+  if(best!==null&&best!==cur){cur=best;onSlide()} },{threshold:[0,.25,.5,.75]});
+slides.forEach(s=>io.observe(s));
+function onSlide(){const s=slides[cur];counter.textContent=String(cur+1).padStart(2,'0')+' / '+total;prog.style.width=((cur)/(total-1)*100)+'%';document.body.classList.toggle('on-night',s.classList.contains('night'));$$('.index-panel a').forEach((a,i)=>a.classList.toggle('cur',i===cur));try{history.replaceState(null,'','#'+s.id)}catch(e){}
+  document.dispatchEvent(new CustomEvent('slide',{detail:s.id}))}
+onSlide();
+function go(i){i=Math.max(0,Math.min(total-1,i));slides[i].scrollIntoView({behavior:RM?'auto':'smooth'})}
+document.addEventListener('keydown',e=>{if(!$('#teaser').hidden){if(e.key==='Escape')closeTeaser();return}
+  if(e.target.closest('input,textarea'))return;
+  if(['ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  else if(['ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home'){go(0)}else if(e.key==='End'){go(total-1)}else if(e.key==='Escape')closeIndex()});
+const idx=$('#index');
+function closeIndex(){idx.hidden=true}
+$('#menuBtn').addEventListener('click',()=>{idx.hidden=false;$('#indexClose').focus()});
+$('#indexClose').addEventListener('click',closeIndex);
+idx.addEventListener('click',e=>{if(e.target===idx)closeIndex()});
+if(location.hash){const t=document.getElementById(location.hash.slice(1));if(t)setTimeout(()=>t.scrollIntoView(),60)}
+window.addEventListener('hashchange',()=>{const t=document.getElementById(location.hash.slice(1));if(t&&t.classList.contains('slide'))t.scrollIntoView({behavior:'smooth'})});
+$$('[data-copy]').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.copy;const done=()=>{b.textContent='Copiado';setTimeout(()=>b.textContent='Copiar',1600)};try{navigator.clipboard.writeText(t).then(done,()=>{sel();done()})}catch(e){sel();done()}function sel(){const r=document.createRange();r.selectNodeContents($('#mail'));const s=getSelection();s.removeAllRanges();s.addRange(r)}}));
+function tabs(root,cb){const bs=$$('button',root);bs.forEach(b=>b.addEventListener('click',()=>{bs.forEach(x=>x.setAttribute('aria-selected',String(x===b)));cb(b.dataset.k,b)}))}
+
+/* ================= HERO ================= */
+(function(){const c=$('#heroCanvas');let P=[],W,H;const cols=['#7d03ff','#4b22f4','#ff5a1f','#0bcf5a','#3ad8d4'];
+  function init(){const f=fitCanvas(c);W=f.w;H=f.h;P=[];const n=Math.min(140,Math.floor(W*H/9000));for(let i=0;i<n;i++)P.push(np(true))}
+  function np(rand){const a=Math.random()*Math.PI*2;const r=Math.max(W,H)*.75;return {a,r:rand?Math.random()*r:r,s:.6+Math.random()*1.8,c:cols[(Math.random()*5)|0],z:1+Math.random()*2.4}}
+  init();addEventListener('resize',init);
+  const tk=$('#tkAuctions');const t0=performance.now();
+  function frame(t){if(visible.has('hero')||t-t0<500){const x=c.getContext('2d');x.clearRect(0,0,W,H);const cx=W<700?W*.8:W*.84,cy=W<700?H*.88:H*.7;
+      for(const p of P){p.r-=p.s*(RM?0:1);p.a+=.002;if(p.r<8)Object.assign(p,np(false));const px=cx+Math.cos(p.a)*p.r*1.25,py=cy+Math.sin(p.a)*p.r*.8;const al=Math.min(1,p.r/120)*.75;x.globalAlpha=al;x.fillStyle=p.c;x.beginPath();x.arc(px,py,p.z,0,7);x.fill();
+        if(p.r<160){x.globalAlpha=al*.25;x.strokeStyle=p.c;x.beginPath();x.moveTo(px,py);x.lineTo(cx,cy);x.stroke()}}
+      x.globalAlpha=1;const g=x.createRadialGradient(cx,cy,0,cx,cy,70);g.addColorStop(0,'rgba(125,3,255,.55)');g.addColorStop(1,'rgba(125,3,255,0)');x.fillStyle=g;x.beginPath();x.arc(cx,cy,70,0,7);x.fill();
+      x.fillStyle='#7d03ff';x.beginPath();x.arc(cx,cy,8+Math.sin(t/300)*2,0,7);x.fill()}
+    // 7B requests / mes ≈ 2.700 por segundo
+    tk.textContent=fmt(Math.floor((t-t0)/1000*2700));requestAnimationFrame(frame)}
+  requestAnimationFrame(frame);
+  tk.nextElementSibling.textContent='requests en nuestra red desde que abriste este deck';
+})();
+
+/* ================= TEASER ================= */
+(function(){const T=$('#teaser'),A=$('#tAudio'),L=$('#tLine'),F=$('#tFmts'),E=$('#tEnd'),CC=$('#tCC'),BAR=$('#tBar');
+  const lines=[
+    {t:.6,txt:'Cada segundo se subastan millones de impresiones.',k:['millones']},
+    {t:3.56,txt:'Detrás de cada una hay una persona, un momento y una oportunidad.',k:['persona,','momento','oportunidad.']},
+    {t:8.35,txt:'AvaMathic™ es el Programmatic de Avalon World Agency®.',k:['AvaMathic™','Programmatic']},
+    {t:11.47,txt:'Tiempo real. +80K sitios y apps premium. 7B oportunidades por mes.',k:['+80K','7B']},
+    {t:17.83,txt:'Audiencias curadas con data propia, de terceros e inteligencia artificial.',k:['curadas','inteligencia','artificial.']},
+    {t:23.18,txt:'Tu mensaje, en el formato justo.',k:['formato','justo.'],fm:true},
+    {t:32.44,txt:'Medimos, cuidamos y optimizamos cada impresión.',k:['cada','impresión.']},
+    {t:36.99,txt:'No hay nada más fuerte que una idea.',k:['idea.'],end:true}];
+  const cc=['Cada segundo se subastan millones de impresiones.','Detrás de cada una hay una persona, un momento, y una oportunidad para tu marca.','AvaMathic es el servicio de Programmatic de Avalon World Agency®.','Compramos en tiempo real, en más de 80 mil sitios y aplicaciones premium, con 7 mil millones de oportunidades por mes.','Construimos audiencias curadas con datos propios, datos de terceros, e inteligencia artificial.','Y llevamos tu mensaje al formato justo: anuncios nativos, rich media, juegos y aplicaciones, audio en Spotify, video, televisión conectada, y pantallas en la vía pública.','Medimos cada impresión, cuidamos cada contexto, y optimizamos todos los días.','No hay nada más fuerte que una idea. AvaMathic la pone frente a la persona indicada.'];
+  const fm=['Native','Rich Media','Gaming & Apps','Audio · Spotify','Video · YouTube','Connected TV','DOOH','Innovadores'];
+  F.innerHTML=fm.map(f=>'<span>'+f+'</span>').join('');
+  let li=-1,raf,start=0,useClock=false,dur=42.6;
+  function show(i){li=i;const l=lines[i];L.innerHTML=l.txt.split(' ').map(w=>'<span class="w'+(l.k.includes(w)?' k':'')+'">'+w+'</span>').join(' ');$$('.w',L).forEach((w,j)=>setTimeout(()=>w.classList.add('in'),j*(RM?0:90)));CC.textContent=cc[i];
+    F.style.display=l.fm?'flex':'none';E.style.display=l.end?'flex':'none';if(l.fm)$$('span',F).forEach((s,j)=>{s.classList.remove('in');setTimeout(()=>s.classList.add('in'),900+j*780)})}
+  function now(){return useClock?(performance.now()-start)/1000:A.currentTime}
+  function loop(){const t=now();let i=-1;lines.forEach((l,j)=>{if(t>=l.t)i=j});if(i!==li&&i>=0)show(i);BAR.style.width=Math.min(100,t/dur*100)+'%';drawBG(t);if(t<dur+1.2&&!T.hidden)raf=requestAnimationFrame(loop);else if(!T.hidden)setTimeout(closeTeaser,800)}
+  const c=$('#teaserCanvas');let pts=[];
+  function drawBG(t){const f=fitCanvas(c);const x=f.x;if(!pts.length)for(let i=0;i<90;i++)pts.push({x:Math.random(),y:Math.random(),v:.2+Math.random(),c:['#7d03ff','#4b22f4','#ff5a1f','#3ad8d4','#0bcf5a'][i%5]});
+    x.clearRect(0,0,f.w,f.h);const g=x.createRadialGradient(f.w*.85,f.h*.9,0,f.w*.85,f.h*.9,f.w*.6);g.addColorStop(0,'rgba(125,3,255,.45)');g.addColorStop(1,'rgba(125,3,255,0)');x.fillStyle=g;x.fillRect(0,0,f.w,f.h);
+    for(const p of pts){const px=((p.x+t*.02*p.v)%1)*f.w,py=(p.y+Math.sin(t*.5+p.x*9)*.02)*f.h;x.globalAlpha=.6;x.fillStyle=p.c;x.fillRect(px,py,2.2,2.2)}x.globalAlpha=1}
+  window.openTeaser=function(){T.hidden=false;li=-1;L.innerHTML='';E.style.display='none';F.style.display='none';A.currentTime=0;A.muted=false;$('#tMute').textContent='Silenciar';
+    const p=A.play();useClock=false;if(p&&p.catch)p.catch(()=>{useClock=true;start=performance.now()});raf=requestAnimationFrame(loop)}
+  window.closeTeaser=function(){T.hidden=true;A.pause();cancelAnimationFrame(raf)}
+  $('#playTeaser').addEventListener('click',openTeaser);$('#replayTeaser').addEventListener('click',openTeaser);
+  $('#tClose').addEventListener('click',closeTeaser);$('#tMute').addEventListener('click',e=>{A.muted=!A.muted;e.target.textContent=A.muted?'Activar sonido':'Silenciar'});
+  A.addEventListener('loadedmetadata',()=>{if(A.duration)dur=A.duration-.6});
+})();
+
+/* ================= RTB ================= */
+(function(){const users=[
+  {t:'Mujer, 25–34 · Palermo, CABA',s:['In-market: autos','Lee economía','iPhone · 4G','19:42 h']},
+  {t:'Hombre, 35–44 · Córdoba',s:['Viajero frecuente','Smart TV','Intereses: golf','21:10 h']},
+  {t:'Mujer, 18–24 · Rosario',s:['Gamer casual','Escucha Workout','Android','08:15 h']},
+  {t:'Decisor B2B, 45–54 · Miami',s:['Finanzas','LinkedIn-like','Desktop','10:03 h']}];
+  const dsps=['DSP A · DV360','DSP B · CTV','DSP C · Nativo','AvaMathic'];
+  const bids=$('#bids'),steps=$$('#rtbSteps div'),ms=$('#msClock'),won=$('#wonAd');let ui=0,busy=false;
+  bids.innerHTML=dsps.map(d=>'<div class="bid"><span>'+d+'</span><div class="track"><div class="fill"></div></div><span class="p num">—</span></div>').join('');
+  function run(){if(busy)return;busy=true;const u=users[ui++%users.length];$('#uTitle').textContent=u.t;$('#uSig').innerHTML='';steps.forEach(s=>s.classList.remove('on'));won.classList.remove('on');$$('.bid',bids).forEach(b=>{b.classList.remove('win');$('.fill',b).style.width='0';$('.p',b).textContent='—'});
+    const t0=performance.now();const dur=RM?50:2600;function clk(){const e=Math.min(1,(performance.now()-t0)/dur);ms.innerHTML=Math.round(e*96)+'<small>ms</small>';if(e<1)requestAnimationFrame(clk)}clk();
+    const at=f=>dur*f;
+    setTimeout(()=>steps[0].classList.add('on'),at(.02));
+    u.s.forEach((s,i)=>setTimeout(()=>{steps[1].classList.add('on');const e=document.createElement('span');e.textContent=s;$('#uSig').appendChild(e)},at(.12+i*.06)));
+    const prices=dsps.map((d,i)=>i===3?3.4+Math.random()*1.4:1.2+Math.random()*2.4);const max=Math.max(...prices);const w=prices.indexOf(max);
+    setTimeout(()=>{steps[2].classList.add('on');$$('.bid',bids).forEach((b,i)=>{$('.fill',b).style.width=(prices[i]/5*100)+'%';$('.p',b).textContent='US$ '+prices[i].toFixed(2)})},at(.45));
+    setTimeout(()=>{steps[3].classList.add('on');$$('.bid',bids)[w].classList.add('win')},at(.75));
+    setTimeout(()=>{steps[4].classList.add('on');won.classList.add('on');$('#wonTxt').textContent='Ganó '+dsps[w]+' con CPM US$ '+prices[w].toFixed(2)+'. Anuncio servido.';busy=false},at(.95));}
+  $('#runAuction').addEventListener('click',run);
+  let auto=false;document.addEventListener('slide',e=>{if(e.detail==='como-funciona'&&!auto){auto=true;setTimeout(run,700)}});
+})();
+
+/* ================= ECOSYSTEM ================= */
+(function(){const N=[
+  {id:'adv',x:60,y:60,l:'Anunciante',c:'#ff5a1f',d:'Objetivos, presupuesto, creatividades y su propia data (CRM, píxeles, listas de clientes).'},
+  {id:'awa',x:250,y:60,l:'AvaMathic',c:'#7d03ff',d:'Nuestra mesa de operaciones: estrategia, curaduría de audiencias, trafficking, optimización diaria y reporting unificado.'},
+  {id:'dsp',x:440,y:60,l:'DSPs',c:'#4b22f4',d:'Display & Video 360 como plataforma núcleo y DSPs especializados en CTV, audio, nativo e in-game. Pujan por cada impresión en tiempo real.'},
+  {id:'data',x:250,y:200,l:'Data partners',c:'#3ad8d4',d:'Audiencias de LoopMe, Acxiom, Alliant y Lotame, location data, señales contextuales y modelos predictivos.'},
+  {id:'ssp',x:440,y:200,l:'SSP / Exchanges',c:'#4b22f4',d:'Conectan la oferta de los publishers con la demanda. Accedemos también por PMP y acuerdos directos.'},
+  {id:'ver',x:60,y:200,l:'Verificación',c:'#0bcf5a',d:'IAS, DoubleVerify, MOAT y Pixalate miden visibilidad, fraude y seguridad de marca en cada impresión.'},
+  {id:'pub',x:440,y:340,l:'Publishers',c:'#16121f',d:'Sitios, apps, juegos, plataformas de streaming, Smart TVs y pantallas DOOH: más de 80 mil entornos premium.'},
+  {id:'usr',x:250,y:340,l:'Personas',c:'#ff5a1f',d:'La persona indicada, en el contexto indicado, con la frecuencia correcta.'},
+  {id:'ads',x:60,y:340,l:'Ad server',c:'#3ad8d4',d:'Campaign Manager 360 y ad servers de rich media sirven y miden las piezas, con atribución cross-canal.'}];
+  const E=[['adv','awa'],['awa','dsp'],['data','awa'],['data','dsp'],['dsp','ssp'],['ssp','pub'],['pub','usr'],['ver','pub'],['ads','usr'],['awa','ads'],['ver','awa']];
+  const P=Object.fromEntries(N.map(n=>[n.id,n]));
+  let s='<svg viewBox="0 0 500 400" role="img" aria-label="Diagrama del ecosistema programático"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(255,255,255,.4)"/></marker></defs>';
+  E.forEach(([a,b],i)=>{s+='<path d="M'+P[a].x+' '+P[a].y+'L'+P[b].x+' '+P[b].y+'" stroke="rgba(255,255,255,.18)" stroke-width="1.5" fill="none"/><path class="flow" d="M'+P[a].x+' '+P[a].y+'L'+P[b].x+' '+P[b].y+'" stroke="#b07bff" stroke-width="2" stroke-dasharray="4 14" fill="none" style="animation:dash '+(2+i%3)+'s linear infinite"/>'});
+  N.forEach(n=>{const big=n.id==='awa';s+='<g class="node" tabindex="0" role="button" data-id="'+n.id+'"><circle cx="'+n.x+'" cy="'+n.y+'" r="'+(big?40:30)+'" fill="'+n.c+'" stroke="rgba(255,255,255,.35)" stroke-width="'+(big?3:1)+'"/>'+(big?'<circle cx="'+n.x+'" cy="'+n.y+'" r="40" fill="none" stroke="#b07bff" stroke-width="2"><animate attributeName="r" values="40;56" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0" dur="2s" repeatCount="indefinite"/></circle>':'')+'<text x="'+n.x+'" y="'+(n.y+(big?58:48))+'" text-anchor="middle" fill="#fff" font-size="12" font-family="Poppins, sans-serif" font-weight="600">'+n.l+'</text></g>'});
+  s+='</svg>';const box=$('#eco');box.innerHTML=s;
+  const st=document.createElement('style');st.textContent='@keyframes dash{to{stroke-dashoffset:-36}}';document.head.appendChild(st);
+  $$('.node',box).forEach(g=>{const f=()=>{const n=P[g.dataset.id];$('#ecoInfo').innerHTML='<h4>'+n.l+'</h4><p>'+n.d+'</p>';$$('.node circle:first-child',box).forEach(c=>c.setAttribute('stroke-width','1'));g.querySelector('circle').setAttribute('stroke-width','4')};g.addEventListener('click',f);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f()}})});
+})();
+
+/* ================= MAP ================= */
+(function(){const M=window.__LAND__;const H=M.length,W=M[0].length;const c=$('#mapCanvas');
+  const R=[{n:'Norteamérica',v:'3,1T',val:3100,lon:-100,lat:42},{n:'Europa',v:'850B',val:850,lon:12,lat:50},{n:'Asia',v:'450B',val:450,lon:100,lat:35},{n:'Sudamérica',v:'250B',val:250,lon:-60,lat:-15},{n:'Medio Oriente',v:'100B',val:100,lon:47,lat:26},{n:'África',v:'85B',val:85,lon:20,lat:2}];
+  function draw(t){const f=fitCanvas(c);const x=f.x;x.clearRect(0,0,f.w,f.h);const cw=f.w/W,ch=f.h/H;const r=Math.min(cw,ch)*.36;
+    x.fillStyle='rgba(75,34,244,.22)';for(let j=0;j<H;j++)for(let i=0;i<W;i++)if(M[j][i]==='1'){x.beginPath();x.arc(i*cw+cw/2,j*ch+ch/2,r,0,7);x.fill()}
+    R.forEach((p,k)=>{const i=(p.lon+170)/340*(W-1),j=(78-p.lat)/134*(H-1);const px=i*cw+cw/2,py=j*ch+ch/2;const base=6+Math.sqrt(p.val)*.55;const ph=((t/1600)+k*.17)%1;
+      x.strokeStyle='rgba(125,3,255,'+(1-ph)*.6+')';x.lineWidth=2;x.beginPath();x.arc(px,py,base+ph*24,0,7);x.stroke();
+      x.fillStyle='#7d03ff';x.beginPath();x.arc(px,py,Math.min(base,26)*.45+3,0,7);x.fill();
+      x.textAlign='center';if(f.w>520){x.fillStyle='#16121f';x.font='600 '+Math.max(10,f.w/62)+'px Poppins, sans-serif';x.fillText(p.n,px,py-base-8)}x.fillStyle='#7d03ff';x.font='700 '+Math.max(11,f.w/50)+'px Unbounded, sans-serif';x.fillText(p.v,px,py+base+18)})}
+  function loop(t){if(visible.has('inventario'))draw(t);requestAnimationFrame(loop)}draw(0);requestAnimationFrame(loop);
+})();
+
+/* ================= AUDIENCE BUILDER ================= */
+(function(){const G=[
+  {g:'Demografía',k:'demo',o:[['18–24',.16],['25–34',.24],['35–44',.21],['45–54',.16],['55+',.18],['Mujeres',.52],['Hombres',.48],['NSE ABC1',.22]]},
+  {g:'Intereses y afinidad',k:'int',o:[['Viajes',.18],['Fitness',.15],['Gaming',.22],['Finanzas',.12],['Moda y belleza',.2],['Autos',.11],['Gastronomía',.24],['Tecnología',.19]]},
+  {g:'Intención',k:'intent',o:[['In-market autos',.03],['In-market inmuebles',.025],['Búsquedas recientes',.06],['Visitó tu sitio',.008],['Carrito abandonado',.003],['Lookalike de clientes',.05]]},
+  {g:'Ubicación y contexto',k:'geo',o:[['CABA',.11],['AMBA',.32],['Córdoba',.09],['Rosario',.04],['Geo histórica',.02],['Contexto brand-safe',.7]]},
+  {g:'Pantalla',k:'dev',o:[['Mobile',.82],['Connected TV',.3],['Desktop',.38],['Audio streaming',.35]]}];
+  const BASE=36e6;const sel={};const box=$('#audGroups');
+  box.innerHTML=G.map(g=>'<div><h4>'+g.g+'</h4><div class="chips">'+g.o.map(o=>'<button class="sig-btn" aria-pressed="false" data-g="'+g.k+'" data-n="'+o[0]+'">'+o[0]+'</button>').join('')+'</div></div>').join('');
+  const btns=$$('.sig-btn',box);btns.forEach(b=>b.addEventListener('click',()=>{b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');calc()}));
+  const presets=[['Decisores de compra de autos',['25–34','35–44','NSE ABC1','Autos','In-market autos','AMBA','Mobile','Connected TV']],['Mamás y papás primerizos',['25–34','Mujeres','Búsquedas recientes','CABA','AMBA','Mobile']],['Gamers casuales',['18–24','25–34','Gaming','Mobile','Contexto brand-safe']],['Viajeros premium',['35–44','45–54','NSE ABC1','Viajes','Lookalike de clientes','Mobile','Desktop']],['Clientes de la competencia',['Geo histórica','AMBA','Mobile']]];
+  $('#presets').innerHTML='<span class="small" style="align-self:center;font-weight:600">Audiencias de ejemplo:</span>'+presets.map((p,i)=>'<button data-i="'+i+'">'+p[0]+'</button>').join('');
+  $$('#presets button').forEach(b=>b.addEventListener('click',()=>{const p=presets[+b.dataset.i];btns.forEach(x=>x.setAttribute('aria-pressed',String(p[1].includes(x.dataset.n))));calc(p[0])}));
+  let frac=1,targetFrac=1,prec=.1;
+  function calc(name){let f=1,groups=0,n=0;const names=[];G.forEach(g=>{const on=g.o.filter(o=>btns.find(b=>b.dataset.n===o[0]).getAttribute('aria-pressed')==='true');if(on.length){groups++;n+=on.length;let s=0;if(g.k==='demo'){const ages=on.filter(o=>/\d/.test(o[0])),sex=on.filter(o=>/jeres|mbres/.test(o[0])),nse=on.filter(o=>/NSE/.test(o[0]));s=(ages.length?ages.reduce((a,o)=>a+o[1],0):1)*(sex.length?sex.reduce((a,o)=>a+o[1],0):1)*(nse.length?.22:1)}else s=Math.min(1,on.reduce((a,o)=>a+o[1],0));f*=groups>1?Math.pow(s,.55):s;names.push(on.map(o=>o[0]).join(' o '))}});
+    targetFrac=f;const reach=BASE*f;prec=Math.min(.97,.12+groups*.15+Math.min(n,8)*.02+(f<.01?.08:0));
+    $('#audReach').textContent=groups?(reach>=1e6?(reach/1e6).toFixed(1).replace('.',',')+' M':fmt(Math.round(reach/1000)*1000)):'36 M (sin filtros)';
+    $('#audReachBar').style.width=Math.max(2,Math.sqrt(f)*100)+'%';$('#audPrec').textContent=Math.round(prec*100)+'%';$('#audPrecBar').style.width=prec*100+'%';
+    $('#audDesc').textContent=groups?((name?name+': ':'')+names.join(' · ')):'Elegí señales de cada grupo. Dentro de un grupo se suman, entre grupos se cruzan.'}
+  calc();
+  const c=$('#audCanvas');const dots=[];for(let i=0;i<420;i++)dots.push({x:Math.random(),y:Math.random(),r:Math.random(),p:Math.random()*6});
+  function loop(t){if(visible.has('audiencias')){frac+=(targetFrac-frac)*.08;const f=fitCanvas(c);const x=f.x;x.clearRect(0,0,f.w,f.h);const thr=Math.sqrt(frac);
+      for(const d of dots){const on=d.r<thr;const px=d.x*f.w+Math.sin(t/1400+d.p)*3,py=d.y*f.h+Math.cos(t/1600+d.p)*3;x.fillStyle=on?'#b07bff':'rgba(255,255,255,.18)';x.beginPath();x.arc(px,py,on?2.6:1.6,0,7);x.fill()}}requestAnimationFrame(loop)}
+  requestAnimationFrame(loop);
+})();
+
+/* ================= GEO ================= */
+(function(){const c=$('#geoCanvas');let devs=[],stores=[],cap=0,W,H,init=false;
+  function setup(){const f=fitCanvas(c);W=f.w;H=f.h;stores=[{x:.28,y:.32,c:'#ff5a1f'},{x:.7,y:.62,c:'#ff5a1f'},{x:.62,y:.24,c:'#3ad8d4'},{x:.24,y:.74,c:'#3ad8d4'}];devs=[];for(let i=0;i<70;i++)devs.push(nd());init=true}
+  function nd(){const h=Math.random()<.5;return{x:Math.random(),y:Math.random(),vx:h?(Math.random()<.5?-1:1)*.0012:0,vy:h?0:(Math.random()<.5?-1:1)*.0012,cap:false,t:0}}
+  function loop(t){if(visible.has('geo')){if(!init)setup();const f=fitCanvas(c);const x=f.x;W=f.w;H=f.h;x.fillStyle='#120d22';x.fillRect(0,0,W,H);
+      x.strokeStyle='rgba(255,255,255,.07)';x.lineWidth=10;for(let i=1;i<6;i++){x.beginPath();x.moveTo(i*W/6,0);x.lineTo(i*W/6,H);x.stroke()}for(let j=1;j<5;j++){x.beginPath();x.moveTo(0,j*H/5);x.lineTo(W,j*H/5);x.stroke()}
+      x.fillStyle='rgba(255,255,255,.035)';for(let i=0;i<6;i++)for(let j=0;j<5;j++)x.fillRect(i*W/6+9,j*H/5+9,W/6-18,H/5-18);
+      const R=Math.min(W,H)*.12;stores.forEach((s,k)=>{const sx=s.x*W,sy=s.y*H;const ph=((t/1800)+k*.25)%1;x.fillStyle=s.c==='#ff5a1f'?'rgba(255,90,31,.1)':'rgba(58,216,212,.1)';x.beginPath();x.arc(sx,sy,R,0,7);x.fill();x.strokeStyle=s.c;x.globalAlpha=.6;x.setLineDash([4,5]);x.lineWidth=1.5;x.beginPath();x.arc(sx,sy,R,0,7);x.stroke();x.setLineDash([]);x.globalAlpha=1-ph;x.beginPath();x.arc(sx,sy,R*ph,0,7);x.stroke();x.globalAlpha=1;x.fillStyle=s.c;x.beginPath();x.arc(sx,sy,6,0,7);x.fill()});
+      devs.forEach(d=>{if(!RM){d.x+=d.vx;d.y+=d.vy}if(d.x<0||d.x>1||d.y<0||d.y>1){Object.assign(d,nd())}const px=d.x*W,py=d.y*H;
+        if(!d.cap)stores.forEach(s=>{if(Math.hypot(px-s.x*W,py-s.y*H)<R){d.cap=true;d.t=t;cap++}});
+        x.fillStyle=d.cap?'#b07bff':'rgba(255,255,255,.55)';x.beginPath();x.arc(px,py,d.cap?3.4:2.2,0,7);x.fill();
+        if(d.cap&&t-d.t<1200){x.fillStyle='#fff';x.font='600 10px Poppins';x.fillText('AD',px+6,py-6)}});
+      $('#geoCount').textContent=fmt(cap)+' dispositivos capturados'}requestAnimationFrame(loop)}
+  requestAnimationFrame(loop);
+})();
+
+/* ================= NATIVE ================= */
+(function(){const body=$('#nativeBody');
+  const lines=n=>'<div class="lines">'+Array.from({length:n},(_,i)=>'<i style="width:'+(70+((i*37)%30))+'%"></i>').join('')+'</div>';
+  const card=(a,t,s,sp)=>'<div class="card-n'+(sp?' sp':'')+'"><div class="img '+a+'"></div><p>'+t+'</p><small>'+s+'</small></div>';
+  const V={
+    feed:()=>'<h4>El dólar cerró estable y el mercado mira la próxima licitación</h4>'+lines(5)+'<div class="feed-h"><span>Te puede interesar</span><span>Patrocinado</span></div><div class="feed">'+card('art-a','Así es el nuevo departamento con amenities que cuesta menos que un alquiler','Torres Ribera · Patrocinado',1)+card('art-b','5 destinos para escaparte un fin de semana largo sin gastar de más','Viajes Austral · Patrocinado',1)+card('art-c','Cómo armar tu fondo de emergencia en 6 meses','Banco Ficticio · Patrocinado',1)+'</div>'+lines(3),
+    carousel:()=>'<h4>Las tendencias de consumo que marcan el último trimestre</h4>'+lines(3)+'<div class="feed-h"><span>Pulso · Patrocinado</span><span>Deslizá →</span></div><div class="carousel">'+card('art-a','Modelo Trail · 30% off','Ver modelo',1)+card('art-b','Modelo Ruta · cuotas sin interés','Ver modelo',1)+card('art-c','Modelo Ciudad · envío gratis','Ver modelo',1)+card('art-e','Kit maratón · edición limitada','Ver modelo',1)+'</div>'+lines(3),
+    vertical:()=>'<h4>Qué hay detrás del boom de las escapadas cortas</h4><div class="vert-wrap"><div class="vert-ad art-e"><div class="bar2"><i></i></div><small style="font-size:.6rem;opacity:.8">Patrocinado</small><b>Viajes Austral: Bariloche desde $199.000</b><span class="ad-cta">Reservar</span></div><div style="flex:1;min-width:0">'+lines(9)+'</div></div><p style="font-family:var(--f-body);font-size:.75rem;color:#777">Reutiliza assets verticales de redes en entornos editoriales premium.</p>',
+    motion:()=>'<h4>Guía para elegir tu primera casa sin morir en el intento</h4>'+lines(3)+'<div class="feed-h"><span>Recomendado para vos</span><span>Patrocinado</span></div><div class="feed native-motion">'+card('art-d','Los compradores están ahorrando más que nunca. Mirá por qué','Hipotecaria Clave · Creado con GenAI Ad Maker',1)+card('art-a','Tu primer depto, con cuota fija en pesos','Hipotecaria Clave · Patrocinado',1)+card('art-c','Simulá tu crédito en 2 minutos','Hipotecaria Clave · Patrocinado',1)+'</div>'};
+  body.innerHTML=V.feed();tabs($('#nativeTabs'),k=>{body.innerHTML=V[k]()});
+})();
+
+/* ================= RICH MEDIA ================= */
+(function(){const scr=$('#rmScreen');let timer=null;
+  const site=(n)=>'<div class="site"><i class="hd"></i>'+Array.from({length:n},(_,i)=>'<i style="width:'+(60+((i*29)%40))+'%"></i>').join('')+'</div>';
+  const F=[
+    {k:'cube',n:'Cubo 3D',d:'Cuatro caras, cuatro mensajes. Arrastralo.',b:'CTR <b>2–4%</b> · Viewability <b>+95%</b>',r(){scr.innerHTML='<div class="ad-host">'+site(6)+'<div class="ad-slot" style="height:260px;background:#16121f;display:flex;align-items:center"><span class="adlabel">AD</span><div class="cube-scene" id="cs"><div class="cube" id="cube">'+
+      [['art-a','Pulso Trail','Agarre en cualquier terreno'],['art-b','Pulso Ruta','Amortiguación para 42K'],['art-c','Pulso Ciudad','Livianas para todos los días'],['art-e','20% OFF','Solo esta semana · Comprar']].map((f,i)=>'<div class="f '+f[0]+'" style="transform:rotateY('+(i*90)+'deg) translateZ(75px)"><small>Pulso</small><b>'+f[1]+'</b><small>'+f[2]+'</small></div>').join('')+'</div></div></div>'+site(3)+'</div>';
+      const cube=$('#cube'),cs=$('#cs');let ry=0,drag=false,lx=0,v=.4;const spin=()=>{if(!drag)ry+=v;cube.style.transform='rotateX(-14deg) rotateY('+ry+'deg)';timer=requestAnimationFrame(spin)};spin();
+      cs.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;cs.setPointerCapture(e.pointerId)});cs.addEventListener('pointermove',e=>{if(drag){ry+=(e.clientX-lx)*.6;lx=e.clientX}});cs.addEventListener('pointerup',()=>{drag=false})}},
+    {k:'cd',n:'Countdown',d:'Cuenta regresiva en vivo hacia tu lanzamiento.',b:'CTR <b>2–4%</b> · Viewability <b>+95%</b>',r(){const end=new Date();end.setDate(end.getDate()+((5-end.getDay()+7)%7||7));end.setHours(20,0,0,0);
+      scr.innerHTML='<div class="ad-host">'+site(4)+'<div class="ad-slot art-d" style="height:300px;padding:22px 14px;display:flex;flex-direction:column;justify-content:space-between;text-align:center"><span class="adlabel">AD</span><small style="font-weight:600;opacity:.8;letter-spacing:.1em">ESTRENO EXCLUSIVO</small><b style="font-family:var(--f-display);font-size:1.6rem;line-height:1.05">Festival Austral<br>en streaming</b><div class="cd" id="cdv"></div><span class="ad-cta" style="align-self:center">Recordame</span></div>'+site(2)+'</div>';
+      const upd=()=>{let s=Math.max(0,(end-new Date())/1000);const d=Math.floor(s/86400);s-=d*86400;const h=Math.floor(s/3600);s-=h*3600;const m=Math.floor(s/60);s=Math.floor(s-m*60);const el=$('#cdv');if(!el)return;el.innerHTML=[[d,'días'],[h,'horas'],[m,'min'],[s,'seg']].map(a=>'<div><b>'+String(a[0]).padStart(2,'0')+'</b><small>'+a[1]+'</small></div>').join('')};upd();timer=setInterval(upd,1000)}},
+    {k:'trivia',n:'Trivia',d:'Una pregunta que la audiencia quiere responder.',b:'Interacción <b>3–8%</b> · Tiempo de interacción <b>10–30 s</b>',r(){scr.innerHTML='<div class="ad-host">'+site(3)+'<div class="ad-slot art-b trivia" style="height:330px;padding:20px 14px;display:flex;flex-direction:column;justify-content:center"><span class="adlabel">AD</span><small style="font-weight:700;opacity:.85">Trivia mundialista · Bebida Andén</small><b style="font-family:var(--f-display);font-size:1.15rem;line-height:1.15;margin:8px 0">¿En qué año Argentina ganó su primer Mundial?</b><button data-ok="0">1974</button><button data-ok="1">1978</button><button data-ok="0">1986</button><small id="tvRes" style="margin-top:10px;font-weight:600;min-height:1.2em"></small></div>'+site(2)+'</div>';
+      $$('.trivia button',scr).forEach(b=>b.addEventListener('click',()=>{$$('.trivia button',scr).forEach(x=>x.classList.add(x.dataset.ok==='1'?'ok':'x'));if(b.dataset.ok!=='1')b.classList.add('no');$('#tvRes').textContent=b.dataset.ok==='1'?'¡Correcto! Ganaste un 2x1 en Andén.':'Era 1978. Igual te llevás un 2x1 en Andén.'}))}},
+    {k:'gift',n:'Regalo',d:'Despierta curiosidad: el usuario abre el premio.',b:'Interacción <b>3–8%</b> · CTR <b>0,5–1%</b>',r(){scr.innerHTML='<div class="ad-host">'+site(3)+'<div class="ad-slot art-e" style="height:320px;padding:20px 14px;text-align:center;display:flex;flex-direction:column;justify-content:center"><span class="adlabel">AD</span><b style="font-family:var(--f-display);font-size:1.25rem;line-height:1.1">Tenemos un regalo para vos</b><small style="opacity:.85">Tocá la caja</small><div class="gift" id="gift" role="button" tabindex="0" aria-label="Abrir regalo"><div class="box"></div><div class="rib"></div><div class="lid"></div><div class="coupon">-25% PULSO</div></div></div>'+site(2)+'</div>';
+      const g=$('#gift');const o=()=>g.classList.add('open');g.addEventListener('click',o);g.addEventListener('keydown',e=>{if(e.key==='Enter')o()})}},
+    {k:'scroll',n:'Scroll reveal',d:'La imagen se revela mientras el usuario scrollea.',b:'CTR <b>2–4%</b> · Viewability <b>80–95%</b>',r(){scr.innerHTML='<div class="scroller" id="sc">'+site(14)+'<div class="window"><div class="bgfix art-a" id="bgfix"></div><div class="window-in"><span><small style="font-family:var(--f-body);font-weight:600;font-size:.7rem">Torres Ribera · AD</small><br>Vista al río desde el piso 20</span></div></div>'+site(16)+'</div>';
+      const sc=$('#sc'),bg=$('#bgfix');sc.addEventListener('scroll',()=>{bg.style.backgroundPosition='center '+(sc.scrollTop*.4)+'px';bg.style.filter='hue-rotate('+(sc.scrollTop/3)+'deg)'});
+      if(!RM){let y=0;timer=setInterval(()=>{y+=2;if(y>sc.scrollHeight-sc.clientHeight){y=0}sc.scrollTop=y},30);sc.addEventListener('pointerdown',()=>clearInterval(timer),{once:true});sc.addEventListener('wheel',()=>clearInterval(timer),{once:true})}}},
+    {k:'hot',n:'Hotspots',d:'Puntos tocables que cuentan los atributos del producto.',b:'Interacción <b>3–8%</b> · Tiempo de interacción <b>10–30 s</b>',r(){scr.innerHTML='<div class="ad-host">'+site(3)+'<div class="ad-slot art-d" style="height:330px"><span class="adlabel">AD</span><div class="hs-stage"><div style="position:absolute;left:18%;top:22%;width:64%;height:56%;border-radius:40% 60% 30% 50%;background:linear-gradient(135deg,#ff5a1f,#7d03ff)"></div><button class="hs-dot" style="left:22%;top:30%" data-t="Suela con tracción 360°">+</button><button class="hs-dot" style="left:62%;top:26%" data-t="Malla respirable, 210 gramos">+</button><button class="hs-dot" style="left:46%;top:62%" data-t="Espuma con retorno de energía">+</button></div><div class="hs-tip" id="hsTip"><b>Pulso Ruta</b><br>Tocá los puntos para descubrir el producto.</div></div>'+site(2)+'</div>';
+      $$('.hs-dot',scr).forEach(b=>b.addEventListener('click',()=>{$('#hsTip').innerHTML='<b>Pulso Ruta</b><br>'+b.dataset.t+'. <span style="color:var(--violet);font-weight:700">Comprar →</span>'}))}},
+    {k:'exp',n:'Expandible',d:'Un banner que se abre en una experiencia completa.',b:'CTR <b>0,5–1%</b> · Interacción <b>3–8%</b>',r(){scr.innerHTML='<div class="ad-host">'+site(4)+'<div class="ad-slot art-a expand" id="exp" role="button" tabindex="0" style="padding:14px;display:flex;flex-direction:column;gap:10px"><span class="adlabel">AD</span><b style="font-family:var(--f-display);font-size:1rem">Viajes Austral · Tocá para abrir</b><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px"><div class="art-b" style="height:90px;border-radius:8px"></div><div class="art-c" style="height:90px;border-radius:8px"></div><div class="art-e" style="height:90px;border-radius:8px"></div><div class="art-d" style="height:90px;border-radius:8px"></div></div><span class="ad-cta">Ver paquetes</span></div>'+site(5)+'</div>';
+      const e=$('#exp');const t=()=>e.classList.toggle('open');e.addEventListener('click',t);e.addEventListener('keydown',k=>{if(k.key==='Enter')t()});if(!RM)setTimeout(()=>e.classList.add('open'),1400)}}];
+  const list=$('#rmList');list.innerHTML=F.map((f,i)=>'<button role="tab" aria-selected="'+(i===0)+'" data-i="'+i+'"><span><b>'+f.n+'</b><br><span>'+f.d+'</span></span><span aria-hidden="true">→</span></button>').join('');
+  function show(i){if(timer){cancelAnimationFrame(timer);clearInterval(timer);timer=null}$$('button',list).forEach((b,j)=>b.setAttribute('aria-selected',String(j===i)));F[i].r();$('#rmBench').innerHTML='<span>'+F[i].b+'</span><span class="buy"><span>CPM</span><span>CPE</span><span>PMP</span></span>'}
+  $$('button',list).forEach(b=>b.addEventListener('click',()=>show(+b.dataset.i)));show(0);
+})();
+
+/* ================= GAMING ================= */
+(function(){const scr=$('#gameScreen');const icons=['dots','bolt','ribbon','arrow','circle','logo-alt-black'];let coins=120;
+  function play(){const deck=[...icons,...icons].sort(()=>Math.random()-.5);let open=[],found=0,moves=0;
+    scr.innerHTML='<div class="game-hud"><span>Pares: <b id="gp">0</b>/6</span><span>Movimientos: <b id="gm">0</b></span></div><div class="game-grid">'+deck.map((d,i)=>'<button class="mem" data-d="'+d+'" aria-label="Carta '+(i+1)+'"><div class="in"><div class="fa"></div><div class="fb"><img src="assets/'+d+'.png" alt=""></div></div></button>').join('')+'</div><div style="position:absolute;left:12px;right:12px;bottom:14px;text-align:center;color:#fff;font-size:.68rem;opacity:.7">Playable ad · presentado por Avalon World Agency®</div>';
+    $$('.mem',scr).forEach(m=>m.addEventListener('click',()=>{if(m.classList.contains('flip')||open.length===2)return;m.classList.add('flip');open.push(m);if(open.length===2){moves++;$('#gm').textContent=moves;const[a,b]=open;if(a.dataset.d===b.dataset.d){found++;$('#gp').textContent=found;open=[];if(found===6)setTimeout(win,500)}else setTimeout(()=>{a.classList.remove('flip');b.classList.remove('flip');open=[]},700)}}))}
+  function win(){const d=document.createElement('div');d.className='reward';d.innerHTML='<img src="assets/logo-alt-white.png" alt="" style="height:40px;width:auto"><b style="font-family:var(--f-display);font-size:1.2rem">¡Completaste el brand kit!</b><span style="font-size:.85rem;opacity:.8">Así termina un playable: con una end card y un llamado a la acción.</span><button class="btn" id="again">Jugar otra vez</button>';scr.appendChild(d);$('#again').addEventListener('click',play)}
+  function reward(){scr.innerHTML='<div class="game-hud"><span>Nivel 7</span><span class="coins" id="coins" style="font-size:.85rem">🪙 '+coins+'</span></div><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;color:#fff"><b style="font-family:var(--f-display);font-size:1.3rem;line-height:1.1">Te faltan 30 monedas para el próximo nivel</b><button class="btn" id="watch"><span class="tri"></span>Mirá un video y ganá 50</button><span style="font-size:.75rem;opacity:.6">El usuario elige ver el anuncio</span></div>';
+    $('#watch').addEventListener('click',()=>{const d=document.createElement('div');d.className='reward';d.innerHTML='<small style="opacity:.6">Anuncio · tu recompensa en <b id="rs">6</b> s</small><div class="vid art-e"><div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;text-align:left"><b style="font-family:var(--f-display);font-size:1rem">Banco Ficticio</b><small>Abrí tu cuenta en 5 minutos</small></div><div class="pb" id="rpb"></div></div><span class="ad-cta">Abrir cuenta</span>';scr.appendChild(d);let s=6;const pb=$('#rpb');pb.style.transition='width 6s linear';requestAnimationFrame(()=>pb.style.width='100%');
+      const iv=setInterval(()=>{s--;const rs=$('#rs');if(rs)rs.textContent=s;if(s<=0){clearInterval(iv);coins+=50;d.innerHTML='<div class="coins">+50 🪙</div><b style="font-family:var(--f-display)">¡Recompensa desbloqueada!</b><span style="font-size:.8rem;opacity:.75">VCR de rewarded video: 85–98%</span><button class="btn" id="back">Seguir jugando</button>';$('#back').addEventListener('click',reward)}},1000)})}
+  play();tabs($('#gameTabs'),k=>k==='play'?play():reward());
+})();
+
+/* ================= AUDIO ================= */
+(function(){const moods=[['Workout','art-a','Rock nacional · energía'],['Commute','art-b','Urbano latino · viaje'],['Chill','art-c','Indie · tarde'],['Party','art-e','Cumbia pop · sábado'],['Focus','art-d','Lo-fi · estudio'],['Dinner','art-f','Jazz · cena']];
+  const mb=$('#moods');mb.innerHTML=moods.map((m,i)=>'<button aria-pressed="'+(i===0)+'" data-i="'+i+'">'+m[0]+'</button>').join('');let mi=0;
+  const cover=$('#cover');function setMood(i){mi=i;$$('button',mb).forEach((b,j)=>b.setAttribute('aria-pressed',String(j===i)));cover.className='cover '+moods[i][1];$('#plName').textContent=moods[i][0];$('#plLabel').textContent='Playlist · '+moods[i][2]}
+  $$('button',mb).forEach(b=>b.addEventListener('click',()=>{setMood(+b.dataset.i);if(state!=='idle'){stop();start()}}));setMood(0);
+  const spot=$('#spotAudio');let ctx=null,an=null,musicNodes=[],state='idle',t0=0,raf;
+  function ensure(){if(ctx)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();an=ctx.createAnalyser();an.fftSize=256;an.connect(ctx.destination);try{const src=ctx.createMediaElementSource(spot);src.connect(an)}catch(e){}}
+  function music(){if(!ctx)return;const g=ctx.createGain();g.gain.value=.0001;g.connect(an);const now=ctx.currentTime;g.gain.exponentialRampToValueAtTime(.16,now+.4);
+    const bpm=[124,100,84,118,76,92][mi];const b=60/bpm;const roots=[45,43,48,41,50,46];const r=roots[mi];
+    for(let i=0;i<Math.ceil(6/b);i++){const t=now+i*b;const o=ctx.createOscillator(),e=ctx.createGain();o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(42,t+.18);e.gain.setValueAtTime(.9,t);e.gain.exponentialRampToValueAtTime(.001,t+.25);o.connect(e).connect(g);o.start(t);o.stop(t+.3);musicNodes.push(o);
+      [0,7,12,16].forEach((iv,k)=>{if(i%2===0){const p=ctx.createOscillator(),pe=ctx.createGain();p.type='triangle';p.frequency.value=440*Math.pow(2,(r+12+iv+(i%4===2?-2:0)-69)/12);pe.gain.setValueAtTime(.0001,t);pe.gain.exponentialRampToValueAtTime(.05,t+.05);pe.gain.exponentialRampToValueAtTime(.0001,t+b*1.9);p.connect(pe).connect(g);p.start(t);p.stop(t+b*2);musicNodes.push(p)}})}
+    g.gain.setValueAtTime(.16,now+5.4);g.gain.exponentialRampToValueAtTime(.0001,now+6);musicNodes.push({stop(){try{g.disconnect()}catch(e){}}})}
+  function start(){ensure();if(ctx&&ctx.state==='suspended')ctx.resume();state='music';t0=performance.now();$('#plState').textContent='Reproduciendo · música';$('#adState').textContent='Música';$('#companion').classList.remove('on');$('#plIcon').setAttribute('d','M5 3h3v12H5zM10 3h3v12h-3z');music();
+    setTimeout(()=>{if(state!=='music')return;state='ad';$('#plState').textContent='Anuncio · Pulso';$('#adState').textContent='Anuncio · 0:10';$('#companion').classList.add('on');spot.currentTime=0;const p=spot.play();if(p&&p.catch)p.catch(()=>{})},6000);tick()}
+  function stop(){state='idle';spot.pause();musicNodes.forEach(n=>{try{n.stop()}catch(e){}});musicNodes=[];$('#plIcon').setAttribute('d','M5 3l10 6-10 6z');$('#plState').textContent='En pausa';cancelAnimationFrame(raf)}
+  spot.addEventListener('ended',()=>{if(state==='ad'){$('#adState').textContent='Música';$('#plState').textContent='Reproduciendo · música';state='music2';t0=performance.now();music();setTimeout(()=>{if(state==='music2'){stop();$('#plState').textContent='Fin de la demo'}},6000)}});
+  $('#plPlay').addEventListener('click',()=>state==='idle'?start():stop());
+  const wave=$('#wave');const buf=new Uint8Array(128);
+  function tick(){const f=fitCanvas(wave);const x=f.x;x.clearRect(0,0,f.w,f.h);const n=48;const bw=f.w/n;
+    if(an)an.getByteFrequencyData(buf);for(let i=0;i<n;i++){let v=an?buf[Math.floor(i*1.6)+2]/255:(.3+.3*Math.sin(performance.now()/200+i));v=Math.max(.04,v);x.fillStyle=state==='ad'?'#1ed760':'#ffffff';x.globalAlpha=.85;const h=v*f.h;x.fillRect(i*bw+1,(f.h-h)/2,bw-2,h)}x.globalAlpha=1;
+    const el=(performance.now()-t0)/1000;$('#plTime').textContent='0:'+String(Math.floor(el)%60).padStart(2,'0');$('#pbar').style.width=(state==='ad'?(spot.currentTime/(spot.duration||10))*100:Math.min(100,el/6*100))+'%';if(state==='ad')$('#adState').textContent='Anuncio · 0:'+String(Math.max(0,Math.ceil((spot.duration||10)-spot.currentTime))).padStart(2,'0');
+    if(state!=='idle')raf=requestAnimationFrame(tick)}
+  document.addEventListener('slide',e=>{if(e.detail!=='audio'&&state!=='idle')stop()});
+})();
+
+/* ================= VIDEO ================= */
+(function(){const vp=$('#vplayer');let iv=null;
+  const bench={skip:'VTR <b>70–90%</b> · Pagás por vista completa (CPV)',bumper:'Recordación alta con <b>6 s</b> no salteables · CPM',out:'Viewability <b>70–90%</b> · Se reproduce solo cuando está en pantalla'};
+  function ad(len,skipAt){clearInterval(iv);vp.innerHTML='<div class="adlayer"><div class="kb art-e"></div><small style="position:relative;opacity:.85;font-weight:600">Pulso</small><h4>Corré tu mejor versión.</h4><span class="cta2">Comprar ahora</span></div><span class="adtag">Anuncio · <span id="vt">0:'+String(len).padStart(2,'0')+'</span></span>'+(skipAt?'<button class="skip" id="skip" disabled>Saltar en '+skipAt+'</button>':'')+'<div class="tl"><i id="vtl"></i></div>';
+    let t=0;const sk=$('#skip');iv=setInterval(()=>{t+=.1;const tl=$('#vtl');if(!tl){clearInterval(iv);return}tl.style.width=(t/len*100)+'%';$('#vt').textContent='0:'+String(Math.max(0,Math.ceil(len-t))).padStart(2,'0');
+      if(sk){if(t<skipAt)sk.textContent='Saltar en '+Math.ceil(skipAt-t);else{sk.disabled=false;sk.textContent='Saltar anuncio ⏭'}}if(t>=len){clearInterval(iv);content('Anuncio completo. Vuelve el contenido.')}},100);
+    if(sk)sk.addEventListener('click',()=>{if(!sk.disabled){clearInterval(iv);content('Anuncio salteado a los '+Math.round(t)+' s. En skippable solo pagás si mira 30 s o completa.')}})}
+  function content(m){vp.innerHTML='<div class="content"><div style="text-align:center;padding:20px"><div style="font-size:1rem;color:#fff;margin-bottom:6px">▶ Contenido del creador</div><small>'+m+'</small><br><button class="btn" style="margin-top:12px" id="vagain">Repetir</button></div></div>';$('#vagain').addEventListener('click',()=>run(curK))}
+  function out(){clearInterval(iv);vp.innerHTML='<div style="position:absolute;inset:0;overflow:auto;background:#fff;padding:16px;font-family:Georgia,serif;color:#222" id="oa"><b style="font-size:1.1rem">La economía de las escapadas cortas</b>'+'<p style="font-size:.85rem;color:#555;margin:8px 0">'+'Los viajes de fin de semana crecieron con fuerza este año. '.repeat(5)+'</p><div id="ov" style="height:0;overflow:hidden;transition:height .6s;border-radius:8px"><div class="art-e" style="height:150px;display:flex;align-items:flex-end;padding:12px;color:#fff;font-family:var(--f-display);font-weight:700">Viajes Austral · Video outstream</div></div><p style="font-size:.85rem;color:#555;margin:8px 0">'+'Los destinos de cercanía concentran la mayor demanda. '.repeat(8)+'</p></div>';
+    const oa=$('#oa'),ov=$('#ov');const chk=()=>{if(oa.scrollTop>30)ov.style.height='150px'};oa.addEventListener('scroll',chk);if(!RM){let y=0;iv=setInterval(()=>{y+=1;oa.scrollTop=y;chk();if(y>120)clearInterval(iv)},30)}}
+  let curK='skip';function run(k){curK=k;$('#videoBench').innerHTML='<span>'+bench[k]+'</span>';if(k==='skip')ad(15,5);else if(k==='bumper')ad(6,0);else out()}
+  tabs($('#videoTabs'),run);content('Elegí un formato o tocá Repetir para ver el anuncio.');$('#videoBench').innerHTML='<span>'+bench.skip+'</span>';
+  document.addEventListener('slide',e=>{if(e.detail==='video'&&!vp.dataset.auto){vp.dataset.auto=1;run('skip')}});
+})();
+
+/* ================= CTV ================= */
+(function(){const tv=$('#tv'),v=$('#ctvVideo'),badge=$('#ctvBadge');let mode='std';
+  $('#qrBox').innerHTML='<img src="assets/qr.png" alt="Código QR a avalonworldagency.com">';
+  const notes={std:'Spot de 30 s a pantalla completa, con sonido, en el corte del contenido.',qr:'Un QR sobre el spot lleva al usuario del living al celular: landing, cotización o venta de entradas.',lshape:'El contenido se achica y la marca ocupa el marco en L, sin interrumpir lo que el usuario mira.',pause:'Cuando el usuario pausa, aparece la marca. Una impresión sin competencia.',int:'Reacciones con emojis en tiempo real sobre el anuncio, medibles como engagement.'};
+  function apply(){tv.classList.remove('mqr','lshape','mpause','mint');const ad=v.currentTime>=5;if(mode==='qr'&&ad)tv.classList.add('mqr');if(mode==='lshape'&&ad)tv.classList.add('lshape');if(mode==='pause'&&(v.paused&&v.currentTime>0))tv.classList.add('mpause');if(mode==='int'&&ad)tv.classList.add('mint')}
+  tabs($('#ctvTabs'),k=>{mode=k;$('#ctvNote').textContent=notes[k];if(k==='pause'&&!v.paused){v.pause()}else if(k!=='pause'&&v.paused&&v.dataset.started){v.play().catch(()=>{})}if(k==='pause'&&!v.dataset.started){v.currentTime=12}apply()});
+  $('#ctvPlay').addEventListener('click',()=>{v.muted=false;v.dataset.started=1;v.play().catch(()=>{v.muted=true;v.play().catch(()=>{})});$('#ctvPlay').hidden=true});
+  v.addEventListener('timeupdate',()=>{const t=v.currentTime;badge.textContent=t<5?'EN VIVO · PROGRAMA':'AD · 0:'+String(Math.max(0,Math.ceil((v.duration||23.4)-t))).padStart(2,'0');apply()});
+  v.addEventListener('pause',apply);v.addEventListener('play',apply);
+  tv.addEventListener('click',e=>{if(e.target.closest('.react,.play-big'))return;if(!v.dataset.started)return;if(v.paused)v.play().catch(()=>{});else v.pause()});
+  $$('.react button',tv).forEach(b=>b.addEventListener('click',()=>{const s=document.createElement('span');s.className='floaty';s.textContent=b.textContent;s.style.left=(10+Math.random()*30)+'%';s.style.bottom='18%';s.style.fontSize='1.6rem';tv.appendChild(s);setTimeout(()=>s.remove(),1400)}));
+  document.addEventListener('slide',e=>{if(e.detail!=='ctv'&&!v.paused)v.pause()});
+})();
+
+/* ================= DOOH ================= */
+(function(){const bb=$('#billboard'),c=$('#cityCanvas');let w='sun',tm='am',drops=[];
+  const CR={sun:{am:['Buen día. Hace 24°.','Andén bien frío, en el kiosco de la esquina.','art-a'],pm:['Hace 31° a la sombra.','Pasá por un Andén helado. Está a 200 m.','art-a'],night:['Noche de calor en la ciudad.','Andén para la juntada de hoy.','art-e']},
+    rain:{am:['¿Llueve? Quedate adentro.','Pedí Andén por app y llega en 20 min.','art-b'],pm:['Sigue lloviendo.','Andén te lo lleva a la oficina. Envío gratis.','art-b'],night:['Lluvia y sillón.','Combo Andén + snacks, envío gratis.','art-d']},
+    cold:{am:['Hace 6°. Arrancá con calor.','Andén Café, a 2 cuadras.','art-e'],pm:['La tarde está para algo caliente.','Chocolate Andén, 2x1 hasta las 18 h.','art-e'],night:['Frío de noche.','Andén Té, para cerrar el día.','art-d']}};
+  const sky={am:['#bfe6ff','#fff3e0'],pm:['#7fb8ff','#ffd5b8'],night:['#0d0918','#2b1260'],match:['#0d0918','#1b2b6b']};
+  function render(){let msg;if(tm==='match')msg=['¡GOOOL! Argentina 2 – 1','Festejalo con Andén. 2x1 hasta el final.','art-c'];else msg=CR[w][tm];
+    bb.innerHTML='<div class="bc '+msg[2]+'"><small>ANDÉN · DOOH programático</small><b>'+msg[0]+'</b><small>'+msg[1]+'</small></div>';
+    $('#doohLog').textContent='Trigger activo: '+(tm==='match'?'resultado en vivo vía API deportiva':'clima = '+({sun:'sol',rain:'lluvia',cold:'frío'}[w])+' · franja = '+({am:'mañana',pm:'tarde',night:'noche'}[tm]))+' → creatividad dinámica servida.'}
+  tabs($('#doohWeather'),k=>{w=k;render()});tabs($('#doohTime'),k=>{tm=k;render()});render();
+  const bld=[];for(let i=0;i<14;i++)bld.push({x:i/14,w:.06+Math.random()*.05,h:.25+Math.random()*.45,win:Math.random()});
+  function loop(t){if(visible.has('dooh')){const f=fitCanvas(c);const x=f.x;const s=sky[tm];const g=x.createLinearGradient(0,0,0,f.h);g.addColorStop(0,w==='rain'&&tm!=='night'&&tm!=='match'?'#8a93a6':s[0]);g.addColorStop(1,s[1]);x.fillStyle=g;x.fillRect(0,0,f.w,f.h);
+      const dark=tm==='night'||tm==='match';
+      if(w==='sun'&&!dark){x.fillStyle='rgba(255,200,80,.9)';x.beginPath();x.arc(f.w*.85,f.h*.18,f.h*.07,0,7);x.fill()}
+      bld.forEach((b,i)=>{const bx=b.x*f.w,bh=b.h*f.h,bw=b.w*f.w;x.fillStyle=dark?'#1b1530':'#3a3550';x.fillRect(bx,f.h*.8-bh,bw,bh);if(dark){x.fillStyle='rgba(255,216,77,.7)';for(let yy=f.h*.8-bh+8;yy<f.h*.8-8;yy+=12)for(let xx=bx+5;xx<bx+bw-6;xx+=10)if(((xx*7+yy*3+i)%5)<2)x.fillRect(xx,yy,4,5)}});
+      x.fillStyle=dark?'#0a0714':'#2a2638';x.fillRect(0,f.h*.8,f.w,f.h*.2);x.fillStyle='rgba(255,255,255,.4)';for(let xx=((t/20)%60)-60;xx<f.w;xx+=60)x.fillRect(xx,f.h*.9,30,3);
+      // pedestrians
+      for(let i=0;i<9;i++){const px=((t/40*(i%2?1:-1)*(0.5+i*.07)+i*137)%f.w+f.w)%f.w;x.fillStyle=dark?'#3b3060':'#16121f';x.beginPath();x.arc(px,f.h*.82,4,0,7);x.fill();x.fillRect(px-3,f.h*.82+4,6,12)}
+      if(w==='rain'){if(drops.length<160)drops.push({x:Math.random(),y:Math.random()});x.strokeStyle='rgba(200,220,255,.6)';x.lineWidth=1;drops.forEach(d=>{d.y+=.02;if(d.y>1){d.y=0;d.x=Math.random()}x.beginPath();x.moveTo(d.x*f.w,d.y*f.h);x.lineTo(d.x*f.w-3,d.y*f.h+10);x.stroke()})}
+      if(w==='cold'){x.fillStyle='rgba(255,255,255,.85)';for(let i=0;i<80;i++){const sx=(i*97+Math.sin(t/900+i)*20)%f.w,sy=((t/30+i*53)%f.h);x.beginPath();x.arc(sx,sy,1.6,0,7);x.fill()}}
+      if(tm==='match'){for(let i=0;i<20;i++){const a=t/300+i;x.fillStyle=['#7d03ff','#3ad8d4','#ffd84d','#ff5a1f'][i%4];x.fillRect((i*71+t/6)%f.w,(Math.sin(a)*.5+.5)*f.h*.5,4,8)}}}
+    requestAnimationFrame(loop)}requestAnimationFrame(loop);
+})();
+
+/* ================= INNOVATION ================= */
+(function(){const I=[
+  {n:'Hypelink',s:'Micrositio instantáneo',d:'Un enlace inteligente que abre un micrositio liviano con precios, ubicación, descuentos y stock. Carga hasta 7 veces más rápido que una web convencional y reduce el rebote entre 70% y 90%.',i:'bolt',c:'#7d03ff'},
+  {n:'Vallas virtuales',s:'Fútbol internacional',d:'Publicidad perimetral virtual en partidos de LaLiga, Ligue 1 y Serie A: la valla cambia según el país que mira la transmisión. Compra exclusiva para LATAM y EE.UU.',i:'arrow',c:'#0bcf5a'},
+  {n:'Video CGI',s:'FOOH en íconos urbanos',d:'Piezas en 3D hiperrealistas que intervienen lugares reconocibles, como el Obelisco o una autopista, pensadas para viralizarse en redes y amplificarse con pauta.',i:'circle',c:'#3ad8d4'},
+  {n:'TV Sync',s:'Sincronizado con la TV',d:'Detectamos en tiempo real cuándo sale tu spot, o el de la competencia, en TV abierta y activamos digital en ese mismo minuto, en el segundo dispositivo.',i:'dots',c:'#4b22f4'},
+  {n:'AR y filtros',s:'Realidad aumentada',d:'Experiencias de realidad aumentada y filtros de marca para Instagram: probadores virtuales, juegos con la cámara y piezas que el usuario comparte.',i:'ribbon',c:'#ff5a1f'},
+  {n:'Push notifications',s:'Mensajes in-app',d:'Notificaciones en apps instaladas, combinables con geolocalización para enviar mensajes cuando el usuario está cerca de un punto de venta.',i:'bolt',c:'#7d03ff'},
+  {n:'Audio binaural',s:'High impact for sound',d:'Sonido 3D envolvente dentro de la pieza: el espectador pasivo se vuelve participante y la recordación sube.',i:'circle',c:'#3ad8d4'},
+  {n:'GenAI Ad Maker',s:'Creatividad con IA',d:'Convertimos imágenes estáticas en anuncios con movimiento y reutilizamos los posteos de mejor rendimiento de redes como piezas display y nativas.',i:'arrow',c:'#0bcf5a'}];
+  const box=$('#inno');box.innerHTML=I.map((x,i)=>'<button aria-expanded="'+(i===0)+'" data-i="'+i+'"><span class="ic" style="background:'+x.c+'33"><img src="assets/'+x.i+'.png" alt=""></span><b>'+x.n+'</b><span>'+x.s+'</span></button>').join('');
+  function show(i){$$('button',box).forEach((b,j)=>b.setAttribute('aria-expanded',String(j===i)));const x=I[i];$('#innoDetail').innerHTML='<div><b style="font-family:var(--f-display);font-size:1.1rem;color:#fff">'+x.n+'</b><p style="margin-top:6px">'+x.d+'</p></div><span class="chip" style="white-space:nowrap">Disponible vía AvaMathic</span>'}
+  $$('button',box).forEach(b=>b.addEventListener('click',()=>show(+b.dataset.i)));show(0);
+})();
+
+/* ================= DASH ================= */
+(function(){const c=$('#dashCanvas');const pts=[];for(let i=0;i<24;i++)pts.push(.35+.4*Math.sin(i/3.2)+.15*Math.random());let started=0;
+  function loop(t){if(visible.has('medicion')){if(!started)started=t;const e=Math.min(1,(t-started)/1800);const ez=1-Math.pow(1-e,3);
+      $('#kImp').textContent=fmt(Math.round(2841320*ez+(t-started)/10));$('#kVcr').textContent=Math.round(84*ez)+'%';$('#kHum').textContent=Math.round(93*ez)+'%';
+      const f=fitCanvas(c);const x=f.x;x.clearRect(0,0,f.w,f.h);const n=pts.length;x.strokeStyle='rgba(22,18,31,.08)';x.lineWidth=1;for(let i=1;i<4;i++){x.beginPath();x.moveTo(0,f.h*i/4);x.lineTo(f.w,f.h*i/4);x.stroke()}
+      const m=Math.max(2,Math.floor(n*ez));const px=i=>i/(n-1)*f.w,py=v=>f.h-(v*.85)*f.h;
+      const g=x.createLinearGradient(0,0,0,f.h);g.addColorStop(0,'rgba(125,3,255,.35)');g.addColorStop(1,'rgba(125,3,255,0)');x.beginPath();x.moveTo(0,f.h);for(let i=0;i<m;i++)x.lineTo(px(i),py(pts[i]));x.lineTo(px(m-1),f.h);x.closePath();x.fillStyle=g;x.fill();
+      x.beginPath();for(let i=0;i<m;i++)i?x.lineTo(px(i),py(pts[i])):x.moveTo(0,py(pts[0]));x.strokeStyle='#7d03ff';x.lineWidth=2.5;x.stroke();
+      x.fillStyle='#7d03ff';x.beginPath();x.arc(px(m-1),py(pts[m-1]),5,0,7);x.fill();x.fillStyle='#6b6577';x.font='11px Poppins';x.fillText('00 h',2,f.h-4);x.textAlign='right';x.fillText('23 h',f.w-2,f.h-4);x.textAlign='left'}else started=0;
+    requestAnimationFrame(loop)}requestAnimationFrame(loop);
+})();
+
+})();
+
+</script>
+</body>
+</html>
