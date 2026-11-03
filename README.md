@@ -12,9 +12,10 @@ Deck interactivo de credenciales del servicio de Programmatic. Sitio estático: 
 2. Settings → Pages → Source: `main` / `root`.
 
 ## Contenido
-- `assets/teaser.mp3`: locución del teaser (se reproduce dentro del deck).
+- `assets/teaser.mp3`: locución del teaser didáctico (voz neural es-AR, se reproduce dentro del deck).
 - `assets/teaser-avamathic.mp4`: teaser en video con locución, para enviar por WhatsApp o redes.
 - `assets/spot.mp3`: spot de audio de ejemplo (demo Spotify).
 - `assets/ctv-contigo.mp4`: pieza CTV de ejemplo.
+- `assets/mkt/`: ejemplos reales del mercado (clips de partners: Pepsi, Michelob Ultra, Lidl, Disney World, Blue Apron, etc.).
 
 Navegación: flechas ↑ ↓, barra espaciadora o el botón **Índice**. Cada sección tiene URL propia (`/#ctv`, `/#audio`, etc.).
