@@ -843,6 +843,58 @@ body.on-night .menu-btn{background:rgba(23,17,39,.7);border-color:var(--night-li
 
 .vplayer .adtag{bottom:auto;top:14px}
 .billboard .bc.pepsi{padding-right:40%}
+/* ---------- AvaLink ---------- */
+.al-feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.al-feats div{padding:14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--night-line);display:flex;flex-direction:column;gap:4px}
+.al-feats b{font-family:var(--f-display);font-size:1rem;color:#fff;line-height:1.15}
+.al-feats span{font-size:.78rem;color:rgba(255,255,255,.65);line-height:1.35}
+@media (max-width:620px){.al-feats{grid-template-columns:minmax(0,1fr)}}
+.al-utm{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:12px;background:#0a0713;border:1px dashed rgba(58,216,212,.4);min-width:0}
+.al-utm code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;color:#9ff2ef;word-break:break-all;line-height:1.5}
+.al-utm code .k{color:#b07bff}
+.al-stage{display:flex;gap:22px;align-items:center;justify-content:center;flex-wrap:wrap}
+.al-dash{display:flex;flex-direction:column;gap:16px;width:min(260px,100%)}
+.al-race,.al-clicks{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--night-line)}
+.rc{display:grid;grid-template-columns:96px minmax(0,1fr) 44px;gap:8px;align-items:center;font-size:.75rem;color:#fff}
+.rc i{height:8px;border-radius:5px;background:rgba(255,255,255,.1);overflow:hidden}
+.rc em{display:block;height:100%;width:0;background:var(--turq);border-radius:5px}
+.rc em.slow{background:rgba(255,255,255,.4)}
+.rc b{text-align:right;font-variant-numeric:tabular-nums}
+.al-bar{display:grid;grid-template-columns:minmax(0,1fr) 30px;gap:4px 8px;font-size:.72rem;color:rgba(255,255,255,.8);align-items:center}
+.al-bar i{grid-column:1/-1;height:6px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden}
+.al-bar i em{display:block;height:100%;width:0;background:linear-gradient(90deg,#7d03ff,#b07bff);transition:width .4s}
+.al-bar b{text-align:right;font-variant-numeric:tabular-nums;color:#fff}
+.al-bar.hit span{color:var(--turq)}
+.al-total{font-size:.8rem;color:#fff;font-family:var(--f-display)}
+/* phone content */
+.al-feed{position:absolute;inset:0;background:#f3f1f7;display:flex;flex-direction:column}
+.al-feed .site{padding:44px 12px 10px;display:flex;flex-direction:column;gap:8px}
+.al-feed .site i{display:block;height:8px;background:#e3dfeb;border-radius:4px}
+.al-ad{position:relative;margin:0 12px;height:230px;border-radius:12px;overflow:hidden;cursor:pointer;border:0;padding:0;background:#0a1f5c;text-align:left}
+.al-ad img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.al-ad .t{position:absolute;left:0;right:0;bottom:0;padding:12px;background:linear-gradient(transparent,rgba(5,15,50,.92));color:#fff;display:flex;flex-direction:column;gap:6px}
+.al-ad .t b{font-family:var(--f-display);font-size:1rem;line-height:1.1}
+.al-ad .tap{align-self:flex-start;background:#fff;color:#0a1f5c;font-size:.7rem;font-weight:800;padding:5px 10px;border-radius:999px;animation:pulse 1.8s infinite}
+.al-hand{position:absolute;right:20px;bottom:40px;font-size:1.8rem;animation:tapHand 1.6s infinite;pointer-events:none}
+@keyframes tapHand{0%,100%{transform:translate(0,0)}50%{transform:translate(-8px,-8px) scale(.9)}}
+.al-load{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:4;font-size:.78rem;color:#6b6577}
+.al-load i{width:60%;height:4px;border-radius:3px;background:#eee;overflow:hidden}
+.al-load i em{display:block;height:100%;width:0;background:#1d4fd8}
+.al-land{position:absolute;inset:0;background:linear-gradient(180deg,#0a1f5c,#1d4fd8 55%,#0a1f5c);color:#fff;display:flex;flex-direction:column;align-items:stretch;gap:9px;padding:42px 16px 16px;z-index:3;overflow:auto}
+.al-land .hero{height:120px;border-radius:12px;overflow:hidden;position:relative;flex:none}
+.al-land .hero img{width:100%;height:100%;object-fit:cover}
+.al-land h4{font-family:var(--f-display);font-size:1.05rem;line-height:1.1;margin:2px 0}
+.al-land p{font-size:.72rem;opacity:.8}
+.al-btn{display:flex;align-items:center;gap:10px;border:0;border-radius:12px;padding:10px 12px;background:#fff;color:#0a1f5c;font-weight:700;font-size:.8rem;text-align:left;transition:transform .15s, box-shadow .2s;opacity:0;transform:translateY(10px)}
+.al-btn.in{opacity:1;transform:none;transition:opacity .35s, transform .35s}
+.al-btn:active{transform:scale(.97)}
+.al-btn .ic{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex:none}
+.al-btn small{display:block;font-weight:500;font-size:.62rem;color:#6b6577}
+.al-btn.hit{box-shadow:0 0 0 3px #3ad8d4}
+.al-badge{position:absolute;top:44px;right:12px;z-index:5;font-size:.6rem;font-weight:800;letter-spacing:.08em;background:#3ad8d4;color:#0a1f5c;padding:3px 8px;border-radius:999px}
+.al-toast{position:absolute;left:10px;right:10px;bottom:10px;z-index:6;background:#16121f;color:#fff;font-size:.66rem;padding:8px 10px;border-radius:10px;line-height:1.4;opacity:0;transform:translateY(8px);transition:all .3s}
+.al-toast.on{opacity:1;transform:none}
+.al-toast b{color:#3ad8d4}
 
 </style>
 <div class="progress" id="progress"></div>
@@ -1023,7 +1075,7 @@ body.on-night .menu-btn{background:rgba(23,17,39,.7);border-color:var(--night-li
       <a href="#video"><span class="glyph" style="background:#ff3b3b"></span><span class="n">06</span><div><h3>Video</h3><p>YouTube, instream y outstream</p></div></a>
       <a href="#ctv"><span class="glyph" style="background:var(--indigo)"></span><span class="n">07</span><div><h3>Connected TV</h3><p>Smart TV, FAST y streaming</p></div></a>
       <a href="#dooh"><span class="glyph" style="background:var(--turq)"></span><span class="n">08</span><div><h3>DOOH</h3><p>Pantallas digitales en vía pública</p></div></a>
-      <a href="#innovacion"><span class="glyph" style="background:#ffd84d"></span><span class="n">09</span><div><h3>Innovadores</h3><p>Hypelink, CGI, vallas virtuales, AR</p></div></a>
+      <a href="#avalink"><span class="glyph" style="background:#ffd84d"></span><span class="n">09</span><div><h3>AvaLink™</h3><p>Landing multi-botón, 10x más rápida</p></div></a>
     </div>
   </div>
   <span class="slide-tag">09 · Formatos</span>
@@ -1227,15 +1279,33 @@ body.on-night .menu-btn{background:rgba(23,17,39,.7);border-color:var(--night-li
   <span class="slide-tag">17 · DOOH</span>
 </section>
 
-<!-- 18 INNOVACIÓN -->
-<section class="slide night mesh" id="innovacion" data-title="Formatos innovadores">
-  <div class="wrap stack" style="gap:20px">
-    <span class="eyebrow rv">09 · Innovadores y disruptivos</span>
-    <h2 class="h-l rv">Lo que todavía <span class="v">no viste</span> en una pauta.</h2>
-    <div class="inno rv" id="inno"></div>
-    <div class="inno-detail rv" id="innoDetail" aria-live="polite"></div>
+<!-- AVALINK -->
+<section class="slide night mesh" id="avalink" data-title="AvaLink">
+  <div class="wrap grid2">
+    <div class="stack">
+      <span class="eyebrow rv">09 · AvaLink™ · tecnología propia</span>
+      <h2 class="h-l rv">Del anuncio a la acción, en <span class="v">un toque</span>.</h2>
+      <p class="lead rv">AvaLink es una landing liviana con multi-botonera que se abre al tocar el anuncio. Carga hasta 10 veces más rápido que una web tradicional, y cada botón lleva a un destino distinto: tu e-commerce, WhatsApp, un mapa, un formulario o la API que necesites.</p>
+      <div class="al-feats rv">
+        <div><b>Hasta 10x</b><span>más rápido que una web tradicional</span></div>
+        <div><b>1 botón = 1 destino</b><span>URL, deep link o API</span></div>
+        <div><b>UTM por botón</b><span>cada click se mide por separado</span></div>
+      </div>
+      <div class="al-utm rv" aria-live="polite"><span class="small" style="color:rgba(255,255,255,.55)">Último click registrado</span><code id="alUtm">Tocá un botón en el celular →</code></div>
+    </div>
+    <div class="al-stage rv">
+      <div class="phone"><div class="scr" id="alScreen"></div></div>
+      <div class="al-dash">
+        <div class="al-race"><span class="small" style="color:rgba(255,255,255,.6)">Tiempo de carga</span>
+          <div class="rc"><span>AvaLink</span><i><em id="rcA"></em></i><b id="rcAt">0,0 s</b></div>
+          <div class="rc"><span>Web tradicional</span><i><em id="rcW" class="slow"></em></i><b id="rcWt">0,0 s</b></div>
+        </div>
+        <div class="al-clicks"><span class="small" style="color:rgba(255,255,255,.6)">Clicks por botón</span><div id="alBars"></div><b class="al-total"><span id="alTotal">0</span> clicks medidos</b></div>
+        <button class="btn ghost" id="alReplay" style="align-self:flex-start;padding:9px 16px;font-size:.8rem">Ver de nuevo</button>
+      </div>
+    </div>
   </div>
-  <span class="slide-tag">18 · Innovación</span>
+  <span class="slide-tag">AvaLink</span>
 </section>
 
 <!-- 19 MEDICIÓN -->
@@ -1830,19 +1900,37 @@ const BR='assets/brands/';
     requestAnimationFrame(loop)}requestAnimationFrame(loop);
 })();
 
-/* ================= INNOVATION ================= */
-(function(){const I=[
-  {n:'Hypelink',s:'Micrositio instantáneo',d:'Un enlace inteligente que abre un micrositio liviano con precios, ubicación, descuentos y stock. Carga hasta 7 veces más rápido que una web convencional y reduce el rebote entre 70% y 90%.',i:'bolt',c:'#7d03ff'},
-  {n:'Vallas virtuales',s:'Fútbol internacional',d:'Publicidad perimetral virtual en partidos de LaLiga, Ligue 1 y Serie A: la valla cambia según el país que mira la transmisión. Compra exclusiva para LATAM y EE.UU.',i:'arrow',c:'#0bcf5a'},
-  {n:'Video CGI',s:'FOOH en íconos urbanos',d:'Piezas en 3D hiperrealistas que intervienen lugares reconocibles, como el Obelisco o una autopista, pensadas para viralizarse en redes y amplificarse con pauta.',i:'circle',c:'#3ad8d4'},
-  {n:'TV Sync',s:'Sincronizado con la TV',d:'Detectamos en tiempo real cuándo sale tu spot, o el de la competencia, en TV abierta y activamos digital en ese mismo minuto, en el segundo dispositivo.',i:'dots',c:'#4b22f4'},
-  {n:'AR y filtros',s:'Realidad aumentada',d:'Experiencias de realidad aumentada y filtros de marca para Instagram: probadores virtuales, juegos con la cámara y piezas que el usuario comparte.',i:'ribbon',c:'#ff5a1f'},
-  {n:'Push notifications',s:'Mensajes in-app',d:'Notificaciones en apps instaladas, combinables con geolocalización para enviar mensajes cuando el usuario está cerca de un punto de venta.',i:'bolt',c:'#7d03ff'},
-  {n:'Audio binaural',s:'High impact for sound',d:'Sonido 3D envolvente dentro de la pieza: el espectador pasivo se vuelve participante y la recordación sube.',i:'circle',c:'#3ad8d4'},
-  {n:'GenAI Ad Maker',s:'Creatividad con IA',d:'Convertimos imágenes estáticas en anuncios con movimiento y reutilizamos los posteos de mejor rendimiento de redes como piezas display y nativas.',i:'arrow',c:'#0bcf5a'}];
-  const box=$('#inno');box.innerHTML=I.map((x,i)=>'<button aria-expanded="'+(i===0)+'" data-i="'+i+'"><span class="ic" style="background:'+x.c+'33"><img src="assets/'+x.i+'.png" alt=""></span><b>'+x.n+'</b><span>'+x.s+'</span></button>').join('');
-  function show(i){$$('button',box).forEach((b,j)=>b.setAttribute('aria-expanded',String(j===i)));const x=I[i];$('#innoDetail').innerHTML='<div><b style="font-family:var(--f-display);font-size:1.1rem;color:#fff">'+x.n+'</b><p style="margin-top:6px">'+x.d+'</p></div><span class="chip" style="white-space:nowrap">Disponible vía AvaMathic</span>'}
-  $$('button',box).forEach(b=>b.addEventListener('click',()=>show(+b.dataset.i)));show(0);
+/* ================= AVALINK ================= */
+(function(){const scr=$('#alScreen');if(!scr)return;
+  const BTN=[
+    {id:'tienda',ic:'🛒',c:'#e8f0ff',l:'Comprar online',s:'Tienda oficial · URL',dest:'tienda.pepsi.com.ar'},
+    {id:'whatsapp',ic:'💬',c:'#e3f9ea',l:'Pedir por WhatsApp',s:'API de WhatsApp Business',dest:'wa.me/549XXXXXXXXXX'},
+    {id:'mapa',ic:'📍',c:'#fff1e6',l:'Encontrar un punto de venta',s:'Google Maps · cerca tuyo',dest:'maps.google.com/?q=pepsi'},
+    {id:'promo',ic:'🎁',c:'#f3e8ff',l:'Participar de la promo',s:'Formulario · API de CRM',dest:'api.crm.com/leads'},
+    {id:'app',ic:'📲',c:'#e6fbfb',l:'Descargar la app',s:'App Store / Google Play',dest:'onelink.to/pepsi'}];
+  const clicks={};BTN.forEach(b=>clicks[b.id]=0);let total=0,timers=[];
+  const bars=$('#alBars');bars.innerHTML=BTN.map(b=>'<div class="al-bar" data-id="'+b.id+'"><span>'+b.l+'</span><b>0</b><i><em></em></i></div>').join('');
+  function upd(hit){const max=Math.max(1,...Object.values(clicks));$$('.al-bar',bars).forEach(r=>{const id=r.dataset.id;$('b',r).textContent=clicks[id];$('em',r).style.width=(clicks[id]/max*100)+'%';r.classList.toggle('hit',id===hit)});$('#alTotal').textContent=total}
+  // seed with plausible example distribution
+  function seed(){const base={tienda:34,whatsapp:51,mapa:22,promo:17,app:9};Object.assign(clicks,base);total=Object.values(base).reduce((a,b)=>a+b,0);upd()}
+  const T=f=>timers.push(setTimeout(f.fn,f.t));
+  function clear(){timers.forEach(clearTimeout);timers=[]}
+  function race(){const a=$('#rcA'),w=$('#rcW'),at=$('#rcAt'),wt=$('#rcWt');a.style.transition='none';w.style.transition='none';a.style.width='0';w.style.width='0';at.textContent='0,0 s';wt.textContent='0,0 s';
+    requestAnimationFrame(()=>{a.style.transition='width .4s linear';w.style.transition='width 4s linear';a.style.width='10%';w.style.width='100%'});
+    const t0=performance.now();const tick=()=>{const e=(performance.now()-t0)/1000;at.textContent=Math.min(e,.4).toFixed(1).replace('.',',')+' s';wt.textContent=Math.min(e,4).toFixed(1).replace('.',',')+' s';if(e<4)requestAnimationFrame(tick)};tick()}
+  function feed(){clear();scr.innerHTML='<div class="al-feed"><div class="site"><i style="width:60%;height:14px;background:#cfc8dc"></i><i></i><i style="width:80%"></i><i style="width:70%"></i></div><button class="al-ad" id="alAd" aria-label="Tocar el anuncio de Pepsi"><img src="assets/brands/pepsi-can.jpg" alt=""><div class="t"><small style="font-size:.6rem;letter-spacing:.12em;font-weight:700;opacity:.85">PEPSI · ANUNCIO</small><b>Encontrá tu Pepsi bien fría</b><span class="tap">Tocá el anuncio</span></div></button><span class="al-hand" aria-hidden="true">👆</span><div class="site"><i></i><i style="width:75%"></i><i style="width:85%"></i></div></div>';
+    $('#alAd').addEventListener('click',open);if(!RM)T({t:2600,fn:open})}
+  function open(){clear();const ld=document.createElement('div');ld.className='al-load';ld.innerHTML='<i><em id="ldb"></em></i>Cargando AvaLink…';scr.appendChild(ld);race();const e=$('#ldb');e.style.transition='width .4s linear';requestAnimationFrame(()=>e.style.width='100%');
+    T({t:450,fn:land})}
+  function land(){scr.innerHTML='<div class="al-land"><span class="al-badge">AvaLink · 0,4 s</span><div class="hero"><img src="assets/brands/pepsi-bottle.jpg" alt="Pepsi"></div><h4>Pepsi, bien fría y cerca tuyo</h4><p>Elegí cómo seguir:</p>'+BTN.map(b=>'<button class="al-btn" data-id="'+b.id+'"><span class="ic" style="background:'+b.c+'">'+b.ic+'</span><span>'+b.l+'<small>'+b.s+'</small></span></button>').join('')+'</div><div class="al-toast" id="alToast"></div>';
+    $$('.al-btn',scr).forEach((b,i)=>{setTimeout(()=>b.classList.add('in'),80+i*90);b.addEventListener('click',()=>hit(b.dataset.id,b))});
+    if(!RM){const auto=['whatsapp','tienda','mapa'];auto.forEach((id,i)=>T({t:1700+i*1500,fn:()=>{const b=$('.al-btn[data-id="'+id+'"]',scr);if(b)hit(id,b,true)}}))}}
+  function hit(id,el,auto){if(!auto)clear();const b=BTN.find(x=>x.id===id);clicks[id]++;total++;upd(id);$$('.al-btn',scr).forEach(x=>x.classList.toggle('hit',x===el));
+    const utm='utm_source=avamathic&utm_medium=programmatic&utm_campaign=pepsi_verano&utm_content=btn_'+id;
+    $('#alUtm').innerHTML='<span class="k">'+b.dest+'</span>?'+utm.replace(/&/g,'&amp;');
+    const t=$('#alToast');if(t){t.innerHTML='Abre <b>'+b.dest+'</b> · click registrado con UTM <b>btn_'+id+'</b>';t.classList.add('on')}}
+  seed();feed();$('#alReplay').addEventListener('click',feed);
+  let started=false;document.addEventListener('slide',e=>{if(e.detail==='avalink'&&!started){started=true;feed()}});
 })();
 
 /* ================= DASH ================= */
